@@ -533,7 +533,7 @@ export default function FarmPage() {
 
       {panel !== "none" && (
         <motion.section className="fixed inset-0 z-40 flex items-end justify-center bg-black/50 p-3 pb-24 sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setPanel("none")}>
-          <div onClick={(e) => e.stopPropagation()} className="mx-auto w-full max-w-md rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-indigo-950/95 to-slate-900/95 p-4 shadow-glow backdrop-blur-xl">
+          <div onClick={(e) => e.stopPropagation()} className="mx-auto w-full rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-indigo-950/95 to-slate-900/95 p-4 shadow-glow backdrop-blur-xl sm:max-w-md">
             {panel === "shop" && (
               <div className="space-y-2">
                 <p className="text-base font-black shimmer-text">🛒 Boutique</p>
