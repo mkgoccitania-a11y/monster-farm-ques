@@ -72,7 +72,7 @@ const actionStat: Record<BattleAction, string> = {
 const actionDesc: Record<BattleAction, string> = {
   strike: "Coup direct · 1 multiplication",
   dodge:  "Frappe rapide + chance d'éviter · 1 multiplication",
-  spell:  "Dégâts magiques perçants · 2 multiplications",
+  spell:  "Dégâts × 2.5 perçants · 2 multiplications",
   guard:  "Réduit -60% dégâts + soin · 1 multiplication",
   potion: "Mange une ration et soigne"
 };
@@ -739,7 +739,7 @@ export default function BattlePage() {
         <ul className="ml-4 list-disc space-y-1">
           <li><b>Frappe (Force) :</b> coup direct simple. Bons dégâts. Améliorée par l'atelier <i>Force</i>.</li>
           <li><b>Esquive (Vitesse) :</b> agit en premier, +crit, 30 % de chance d'esquiver totalement. Améliorée par <i>Réflexe</i>.</li>
-          <li><b>Sort (Concentration) :</b> 2 multiplications. Dégâts magiques qui ignorent 50 % de la défense ennemie. Améliorée par <i>Concentration</i>. Débloqué à la Forme 2.</li>
+          <li><b>Sort (Concentration) :</b> 2 multiplications. Dégâts <b>× 2.5</b> (toujours) qui ignorent 50 % de la défense ennemie. Améliorée par <i>Concentration</i>. Débloqué à la Forme 2.</li>
           <li><b>Garde (Endurance) :</b> divise les dégâts subis par ~2,5 et soigne légèrement. Améliorée par <i>Endurance</i>.</li>
           <li><b>Potion :</b> mange une ration pour récupérer des PV (consomme 1 nourriture).</li>
         </ul>

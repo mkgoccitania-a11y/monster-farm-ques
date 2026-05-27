@@ -1655,8 +1655,9 @@ export const resolveBattleTurn = ({
         actionPowerBase = creature.stats.speed * 1.0;
         break;
       case "spell":
-        // Sort : INT × 1.5 + ignore 50% DEF (si spécial débloqué, +20%)
-        actionPowerBase = creature.stats.intelligence * (creature.specialUnlocked ? 1.7 : 1.5);
+        // Sort : INT × 2.5 (toujours) + ignore 50% DEF
+        // Coût : 2 multiplications (vs 1 pour les autres actions) — justifie la puissance
+        actionPowerBase = creature.stats.intelligence * 2.5;
         ignoreDefenseFactor = 0.5;
         break;
       case "guard":
