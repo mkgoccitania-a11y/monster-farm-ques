@@ -42,7 +42,7 @@ import {
   upgradeCurrentCreatureStat
 } from "@/lib/gameLogic";
 import { resetState } from "@/lib/storage";
-import { getCreatureReaction } from "@/lib/creatureVisuals";
+import { defaultSpeciesForType, getCreatureReaction, getSpeciesSprite } from "@/lib/creatureVisuals";
 import { Creature, CropType, MultiplicationQuestion, PlayerState } from "@/lib/types";
 import { useGameState } from "@/lib/useGameState";
 
@@ -381,7 +381,16 @@ export default function FarmPage() {
                 <span className="chip">Forme {creature.evolution_stage}</span>
                 <span className="chip">× {creature.multiplication_table}</span>
               </div>
-              <p className="mt-1 truncate text-lg font-black text-white drop-shadow">{creature.name}</p>
+              <div className="mt-1 flex items-center gap-2">
+                <p className="min-w-0 flex-1 truncate text-lg font-black text-white drop-shadow">{creature.name}</p>
+                <button
+                  onClick={() => setEvoPreviewOpen(true)}
+                  className="shrink-0 rounded-lg border border-violet-300/40 bg-violet-500/25 px-2 py-1 text-[11px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/40 active:scale-95"
+                  title="Voir la prochaine évolution"
+                >
+                  ❓ Évolution{evolutionInfo?.ready ? " ✨" : ""}
+                </button>
+              </div>
             </div>
 
             <div className="space-y-1.5">
@@ -403,12 +412,6 @@ export default function FarmPage() {
             </div>
 
             <div className="space-y-1.5">
-              <button
-                onClick={() => setEvoPreviewOpen(true)}
-                className="w-full rounded-xl border border-violet-300/30 bg-violet-500/15 px-2 py-1.5 text-[12px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/25 active:scale-95"
-              >
-                ❓ Prochaine évolution {evolutionInfo?.ready ? "(prêt !)" : ""}
-              </button>
               {evolutionInfo?.ready && (
                 <button onClick={handleEvolveClick} className="btn-primary w-full text-xs">
                   ✨ Faire évoluer !
@@ -529,8 +532,8 @@ export default function FarmPage() {
       <section className="glass p-2 text-center text-sm font-bold text-white/90">{message}</section>
 
       {panel !== "none" && (
-        <motion.section className="fixed inset-0 z-40 flex items-end bg-black/50 p-3 pb-24" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setPanel("none")}>
-          <div onClick={(e) => e.stopPropagation()} className="w-full rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-indigo-950/95 to-slate-900/95 p-4 shadow-glow backdrop-blur-xl">
+        <motion.section className="fixed inset-0 z-40 flex items-end justify-center bg-black/50 p-3 pb-24 sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setPanel("none")}>
+          <div onClick={(e) => e.stopPropagation()} className="mx-auto w-full max-w-md rounded-3xl border border-white/20 bg-gradient-to-br from-slate-900/95 via-indigo-950/95 to-slate-900/95 p-4 shadow-glow backdrop-blur-xl">
             {panel === "shop" && (
               <div className="space-y-2">
                 <p className="text-base font-black shimmer-text">🛒 Boutique</p>
@@ -622,27 +625,42 @@ export default function FarmPage() {
               <div className="space-y-2 text-sm text-white/90">
                 <p className="text-base font-black shimmer-text">👥 Mon équipe</p>
                 <p className="text-xs text-white/70">{state.creatures.length} créature(s) · {state.progress.unlockedCreatures} débloquée(s)</p>
-                <div className="grid grid-cols-2 gap-2">
+                {/* Liste verticale : 1 carte par ligne, photo en haut + infos dessous */}
+                <div className="grid max-h-[60vh] grid-cols-2 gap-2 overflow-y-auto pr-1">
                   {state.creatures.map((c) => {
                     const active = c.id === state.progress.currentCreatureId;
+                    const species = c.species ?? defaultSpeciesForType(c.type);
+                    const sprite = getSpeciesSprite(species, c.evolution_stage);
                     return (
                       <button
                         key={c.id}
                         onClick={() => handleSwitch(c.id)}
-                        className={`poke-card p-2 text-left ${active ? "bg-gradient-to-br from-violet-500/40 to-fuchsia-600/40 shadow-glow" : "bg-gradient-to-br from-white/10 to-white/5"}`}
+                        className={`poke-card flex flex-col p-2 text-left ${active ? "bg-gradient-to-br from-violet-500/40 to-fuchsia-600/40 shadow-glow" : "bg-gradient-to-br from-white/10 to-white/5"}`}
                       >
-                        <div className="flex items-center gap-2">
-                          <TypeBadge type={c.type} size="xs" />
-                          <span className="chip">Lv {c.level}</span>
-                          {active && <span className="text-xs text-yellow-300">★</span>}
+                        {/* Photo du personnage */}
+                        <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-white/15 bg-gradient-to-b from-black/30 to-black/50">
+                          <img
+                            src={sprite}
+                            alt={c.name}
+                            className="h-full w-full object-cover"
+                            draggable={false}
+                          />
+                          <div className="absolute left-1 top-1">
+                            <TypeBadge type={c.type} size="xs" />
+                          </div>
+                          {active && (
+                            <span className="absolute right-1 top-1 rounded-full bg-amber-400/90 px-1.5 py-0.5 text-[10px] font-black text-amber-950">★ Actif</span>
+                          )}
+                          <span className="absolute bottom-1 right-1 rounded-full bg-black/55 px-1.5 py-0.5 text-[10px] font-black text-white/90">Lv {c.level}</span>
                         </div>
-                        <p className="mt-1 text-sm font-black">{c.name}</p>
+                        {/* Infos */}
+                        <p className="mt-1.5 truncate text-sm font-black">{c.name}</p>
                         <p className="text-[11px] text-white/70">Forme {c.evolution_stage} · Table × {c.multiplication_table}</p>
                         <div className="mt-1 grid grid-cols-4 gap-1 text-[11px] font-black">
-                          <span className="rounded bg-rose-500/20 px-1 py-0.5 text-rose-100">{c.stats.attack}</span>
-                          <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-100">{c.stats.speed}</span>
-                          <span className="rounded bg-violet-500/20 px-1 py-0.5 text-violet-100">{c.stats.intelligence}</span>
-                          <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-emerald-100">{c.stats.defense}</span>
+                          <span className="rounded bg-rose-500/20 px-1 py-0.5 text-center text-rose-100">{c.stats.attack}</span>
+                          <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-center text-cyan-100">{c.stats.speed}</span>
+                          <span className="rounded bg-violet-500/20 px-1 py-0.5 text-center text-violet-100">{c.stats.intelligence}</span>
+                          <span className="rounded bg-emerald-500/20 px-1 py-0.5 text-center text-emerald-100">{c.stats.defense}</span>
                         </div>
                       </button>
                     );
