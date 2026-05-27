@@ -11,7 +11,7 @@ export default function ProgressBar({ label, value, max, colorClass }: ProgressB
 
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-[11px] font-black text-white/90">
+      <div className="flex items-center justify-between text-[12px] font-black text-white/90">
         <span>{label}</span>
         <span>{value} / {max}</span>
       </div>

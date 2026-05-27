@@ -91,7 +91,7 @@ export default function CreatureSpeechBubble({ state, creature, override, align 
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: vertical === "top" ? -4 : 4, scale: 0.95 }}
           transition={{ duration: 0.25 }}
-          className={`relative max-w-[90%] rounded-2xl border bg-gradient-to-br ${styleCls} px-3 py-1.5 text-center text-[11px] font-black shadow-glow backdrop-blur-md`}
+          className={`relative max-w-[90%] rounded-2xl border bg-gradient-to-br ${styleCls} px-3 py-1.5 text-center text-[12px] font-black shadow-glow backdrop-blur-md`}
           style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.35))" }}
         >
           {displayText}

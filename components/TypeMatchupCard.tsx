@@ -51,7 +51,7 @@ export default function TypeMatchupCard({ playerType, enemyType, matchup, compac
         <div className="flex items-center gap-2">
           <span className="text-lg">{s.emoji}</span>
           <div>
-            <p className={`text-[10px] font-black uppercase tracking-[0.2em] ${s.text}`}>Affrontement</p>
+            <p className={`text-[11px] font-black uppercase tracking-[0.2em] ${s.text}`}>Affrontement</p>
             <p className={`text-base font-black ${s.text}`}>{matchup.label}</p>
           </div>
         </div>
@@ -64,21 +64,21 @@ export default function TypeMatchupCard({ playerType, enemyType, matchup, compac
 
       {!compact && (
         <>
-          <div className="mt-2 grid grid-cols-2 gap-2 text-center text-[11px] font-black">
+          <div className="mt-2 grid grid-cols-2 gap-2 text-center text-[12px] font-black">
             <div className="rounded-xl border border-white/15 bg-black/30 px-2 py-1">
-              <p className="text-[9px] uppercase tracking-wide text-white/60">Tes dégâts</p>
+              <p className="text-[10px] uppercase tracking-wide text-white/60">Tes dégâts</p>
               <p className={matchup.playerMul > 1 ? "text-emerald-200" : matchup.playerMul < 1 ? "text-rose-200" : "text-white/85"}>
                 {fmtPct(matchup.playerMul)}
               </p>
             </div>
             <div className="rounded-xl border border-white/15 bg-black/30 px-2 py-1">
-              <p className="text-[9px] uppercase tracking-wide text-white/60">Dégâts subis</p>
+              <p className="text-[10px] uppercase tracking-wide text-white/60">Dégâts subis</p>
               <p className={matchup.enemyMul > 1 ? "text-rose-200" : matchup.enemyMul < 1 ? "text-emerald-200" : "text-white/85"}>
                 {fmtPct(matchup.enemyMul)}
               </p>
             </div>
           </div>
-          <p className={`mt-2 text-[11px] font-bold ${s.text}`}>{matchup.hint}</p>
+          <p className={`mt-2 text-[12px] font-bold ${s.text}`}>{matchup.hint}</p>
         </>
       )}
     </motion.section>

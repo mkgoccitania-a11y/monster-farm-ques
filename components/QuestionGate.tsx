@@ -63,7 +63,7 @@ export default function QuestionGate({ open, subtitle, questions, onAllAnswered,
     >
       <div className="w-full rounded-[1.6rem] border-[3px] border-[#7b4418] bg-gradient-to-b from-[#ffe4ba] to-[#efc482] p-3">
         {questions.length > 1 && (
-          <p className="mb-1 text-center text-[11px] font-black text-[#6a3814]">
+          <p className="mb-1 text-center text-[12px] font-black text-[#6a3814]">
             Question {index + 1} / {questions.length}
           </p>
         )}

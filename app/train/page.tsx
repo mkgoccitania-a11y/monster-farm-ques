@@ -216,7 +216,7 @@ export default function TrainPage() {
       />
 
       <div className="flex items-center justify-between px-1">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200">💪 Entraînement</p>
+        <p className="text-[12px] font-black uppercase tracking-[0.2em] text-cyan-200">💪 Entraînement</p>
         <HelpButton onClick={() => setHelp(true)} />
       </div>
 
@@ -228,7 +228,7 @@ export default function TrainPage() {
 
       <section className="poke-card bg-gradient-to-br from-indigo-500/25 to-slate-900/40 p-3">
         <CreatureCard creature={creature} mood={active ? "happy" : "idle"} reaction={active ? reaction : null} state={state} />
-        <div className="mt-2 grid grid-cols-4 gap-1 text-[11px] font-black">
+        <div className="mt-2 grid grid-cols-4 gap-1 text-[12px] font-black">
           <div className="flex items-center justify-center gap-1 rounded-lg bg-rose-500/25 px-2 py-1 text-rose-100"><GameIcon name="strength" size={12} />{creature.stats.attack}</div>
           <div className="flex items-center justify-center gap-1 rounded-lg bg-cyan-500/25 px-2 py-1 text-cyan-100"><GameIcon name="speed" size={12} />{creature.stats.speed}</div>
           <div className="flex items-center justify-center gap-1 rounded-lg bg-violet-500/25 px-2 py-1 text-violet-100"><GameIcon name="intelligence" size={12} />{creature.stats.intelligence}</div>
@@ -248,16 +248,16 @@ export default function TrainPage() {
               >
                 <div className="text-white"><GameIcon name={opt.icon} size={22} /></div>
                 <p className="mt-1 text-sm font-black text-white">{opt.label}</p>
-                <p className="text-[10px] font-bold text-white/80">{opt.fantasy}</p>
-                <p className="text-[10px] font-bold text-cyan-200">{opt.stat}</p>
-                <p className="mt-1 rounded bg-black/30 px-1 py-0.5 text-[9px] font-black text-amber-100">{opt.combatMove}</p>
+                <p className="text-[11px] font-bold text-white/80">{opt.fantasy}</p>
+                <p className="text-[11px] font-bold text-cyan-200">{opt.stat}</p>
+                <p className="mt-1 rounded bg-black/30 px-1 py-0.5 text-[10px] font-black text-amber-100">{opt.combatMove}</p>
               </button>
             );
           })}
         </section>
       )}
 
-      <section className="glass grid grid-cols-4 gap-2 p-2 text-center text-[11px] font-black text-white/90">
+      <section className="glass grid grid-cols-4 gap-2 p-2 text-center text-[12px] font-black text-white/90">
         <div className="flex items-center justify-center gap-1"><GameIcon name="energy" size={12} />{state.progress.energy}/{state.progress.energyMax}</div>
         <div>Série {Math.min(index + (active ? 1 : 0), TOTAL_QUESTIONS)}/{TOTAL_QUESTIONS}</div>
         <div>Combo ×{combo}</div>
@@ -268,7 +268,7 @@ export default function TrainPage() {
         <p className="font-black text-cyan-200">Atelier {currentTheme.label} — {currentTheme.fantasy}</p>
         <p className="mt-1 text-white/80">Maîtrise {mastery.mastered}/{mastery.total} · Faibles : {mastery.weak.length > 0 ? mastery.weak.join(", ") : "—"}</p>
         {/* Effets actuels de la stat ciblée */}
-        <div className="mt-2 rounded-lg border border-white/10 bg-white/5 p-2 text-[11px] text-white/85">
+        <div className="mt-2 rounded-lg border border-white/10 bg-white/5 p-2 text-[12px] text-white/85">
           {focus === "strength" && (
             <p>💪 Force actuelle : <b>{creature.stats.attack}</b> → Frappe inflige ~<b>{Math.round(creature.stats.attack * 1.3)}</b> dégâts (avant défense).</p>
           )}
@@ -329,7 +329,7 @@ export default function TrainPage() {
           <li><b>Réflexe</b> → VITESSE → améliore l'<b>Esquive</b> (priorité, +crit, +chance d'éviter un coup).</li>
           <li>
             <b>Concentration</b> → INTELLIGENCE :
-            <ul className="ml-4 mt-1 list-[circle] space-y-0.5 text-[11px]">
+            <ul className="ml-4 mt-1 list-[circle] space-y-0.5 text-[12px]">
               <li>Améliore le <b>Sort</b> en combat (dégâts qui ignorent 50 % de la défense)</li>
               <li>Débloque le Sort à <b>INT ≥ 15</b> (~3 ateliers Concentration)</li>
               <li>Augmente l'<b>XP gagné par bonne réponse</b> (+1 % par point au-dessus de 10)</li>

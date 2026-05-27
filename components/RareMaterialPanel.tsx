@@ -97,7 +97,7 @@ export default function RareMaterialPanel({ open, current, onClose }: RareMateri
               Tu en as <span className="text-2xl">{current}</span> · sert à faire évoluer ta créature.
             </p>
 
-            <p className="mt-3 text-[11px] font-black uppercase tracking-wide text-fuchsia-200">Comment en obtenir ?</p>
+            <p className="mt-3 text-[12px] font-black uppercase tracking-wide text-fuchsia-200">Comment en obtenir ?</p>
 
             <div className="mt-2 space-y-2">
               {SOURCES.map((s, i) => (
@@ -107,8 +107,8 @@ export default function RareMaterialPanel({ open, current, onClose }: RareMateri
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-black text-white">{s.label}</p>
-                    <p className="text-[10px] font-bold text-white/80">{s.detail}</p>
-                    <p className="mt-0.5 inline-block rounded-full bg-black/30 px-2 py-0.5 text-[10px] font-black text-amber-200">
+                    <p className="text-[11px] font-bold text-white/80">{s.detail}</p>
+                    <p className="mt-0.5 inline-block rounded-full bg-black/30 px-2 py-0.5 text-[11px] font-black text-amber-200">
                       {s.chance}
                     </p>
                   </div>
@@ -116,7 +116,7 @@ export default function RareMaterialPanel({ open, current, onClose }: RareMateri
               ))}
             </div>
 
-            <p className="mt-3 rounded-xl bg-cyan-500/20 px-3 py-2 text-center text-[11px] font-black text-cyan-100">
+            <p className="mt-3 rounded-xl bg-cyan-500/20 px-3 py-2 text-center text-[12px] font-black text-cyan-100">
               💡 Astuce : plus la zone est avancée, plus le matériau rare tombe souvent !
             </p>
           </motion.div>

@@ -56,7 +56,7 @@ export default function CropsHelpPanel({ open, unlockedZones, onClose }: CropsHe
               </button>
             </div>
 
-            <p className="mt-2 text-[11px] text-white/70">
+            <p className="mt-2 text-[12px] text-white/70">
               Tu peux planter <b>une culture par zone débloquée</b>. Plus la culture est lente, plus elle rapporte de nourriture, de pièces et de matériau rare 💎.
             </p>
 
@@ -80,27 +80,27 @@ export default function CropsHelpPanel({ open, unlockedZones, onClose }: CropsHe
                         <div className="flex items-center gap-1">
                           <p className="text-sm font-black text-white">{c.label}</p>
                           {unlocked ? (
-                            <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/40 px-1.5 py-0.5 text-[9px] font-black text-emerald-50">
+                            <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/40 px-1.5 py-0.5 text-[10px] font-black text-emerald-50">
                               <GameIcon name="check" size={10} />
                               Débloquée
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-0.5 rounded-full bg-rose-500/40 px-1.5 py-0.5 text-[9px] font-black text-rose-50">
+                            <span className="inline-flex items-center gap-0.5 rounded-full bg-rose-500/40 px-1.5 py-0.5 text-[10px] font-black text-rose-50">
                               <GameIcon name="lock" size={10} />
                               Verrouillée
                             </span>
                           )}
                         </div>
-                        <p className="mt-0.5 text-[10px] font-bold text-white/70">Pousse en {c.duration}</p>
-                        <p className="text-[10px] font-bold text-amber-200">{c.earns}</p>
+                        <p className="mt-0.5 text-[11px] font-bold text-white/70">Pousse en {c.duration}</p>
+                        <p className="text-[11px] font-bold text-amber-200">{c.earns}</p>
                       </div>
                     </div>
                     {!unlocked && (
-                      <div className="mt-2 rounded-xl border border-rose-300/30 bg-rose-500/15 px-2 py-1.5 text-[11px] text-rose-100">
+                      <div className="mt-2 rounded-xl border border-rose-300/30 bg-rose-500/15 px-2 py-1.5 text-[12px] text-rose-100">
                         <p>
                           <b>Pour débloquer :</b> atteins la <b>Zone {c.unlockZone} ({zoneNames[c.unlockZone]})</b>.
                         </p>
-                        <p className="mt-0.5 text-[10px] text-rose-50/85">
+                        <p className="mt-0.5 text-[11px] text-rose-50/85">
                           Gagne 5 combats dans ta zone actuelle, puis bats le 👑 <b>Boss de zone</b> pour passer à la suivante.
                         </p>
                       </div>
@@ -110,7 +110,7 @@ export default function CropsHelpPanel({ open, unlockedZones, onClose }: CropsHe
               })}
             </div>
 
-            <p className="mt-3 rounded-xl bg-cyan-500/15 px-2 py-1.5 text-center text-[11px] font-black text-cyan-100">
+            <p className="mt-3 rounded-xl bg-cyan-500/15 px-2 py-1.5 text-center text-[12px] font-black text-cyan-100">
               Astuce : la créature heureuse récolte +12 % de bonus !
             </p>
           </motion.div>

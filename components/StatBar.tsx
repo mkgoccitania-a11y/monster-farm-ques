@@ -25,7 +25,7 @@ export default function StatBar({ label, value, max, color = "violet", icon, ico
   const pct = Math.max(0, Math.min(100, (value / Math.max(1, max)) * 100));
   return (
     <div className="space-y-1">
-      <div className="flex items-center justify-between text-[11px] font-black text-white/90">
+      <div className="flex items-center justify-between text-[12px] font-black text-white/90">
         <span className="flex items-center gap-1">
           {iconName ? <GameIcon name={iconName} size={13} /> : icon ? <span>{icon}</span> : null}
           {label}

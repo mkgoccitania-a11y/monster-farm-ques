@@ -82,8 +82,8 @@ export default function HomePage() {
               <span className="chip">Lv {creature.level}</span>
             </div>
             <p className="mt-2 text-2xl font-black text-white drop-shadow">{creature.name}</p>
-            <p className="text-[11px] font-bold text-white/70">{state.progress.objective}</p>
-            <div className="mt-2 grid grid-cols-4 gap-1 text-[10px] font-black">
+            <p className="text-[12px] font-bold text-white/70">{state.progress.objective}</p>
+            <div className="mt-2 grid grid-cols-4 gap-1 text-[11px] font-black">
               <div className="flex items-center justify-center gap-0.5 rounded-lg bg-rose-500/20 px-1 py-0.5 text-rose-100"><GameIcon name="strength" size={11} />{creature.stats.attack}</div>
               <div className="flex items-center justify-center gap-0.5 rounded-lg bg-cyan-500/20 px-1 py-0.5 text-cyan-100"><GameIcon name="speed" size={11} />{creature.stats.speed}</div>
               <div className="flex items-center justify-center gap-0.5 rounded-lg bg-violet-500/20 px-1 py-0.5 text-violet-100"><GameIcon name="intelligence" size={11} />{creature.stats.intelligence}</div>
@@ -102,7 +102,7 @@ export default function HomePage() {
 
         {/* Effets actifs */}
         <div className="relative mt-2">
-          <p className="mb-1 text-[10px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
+          <p className="mb-1 text-[11px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
           <StatusEffectsBar effects={statusEffects} />
         </div>
       </section>
@@ -112,22 +112,22 @@ export default function HomePage() {
         <Link href="/farm" className="poke-card group bg-gradient-to-br from-emerald-500/40 via-green-600/30 to-emerald-900/40 p-3 active:scale-95">
           <div className="text-emerald-200"><GameIcon name="farm" size={28} /></div>
           <p className="mt-1 text-lg font-black text-white">Ferme</p>
-          <p className="text-[11px] font-bold text-white/80">Planter, nourrir, soigner</p>
+          <p className="text-[12px] font-bold text-white/80">Planter, nourrir, soigner</p>
         </Link>
         <Link href="/battle" className="poke-card group bg-gradient-to-br from-rose-500/40 via-red-600/30 to-rose-900/40 p-3 active:scale-95">
           <div className="text-rose-200"><GameIcon name="battle" size={28} /></div>
           <p className="mt-1 text-lg font-black text-white">Combat</p>
-          <p className="text-[11px] font-bold text-white/80">Affronter des monstres</p>
+          <p className="text-[12px] font-bold text-white/80">Affronter des monstres</p>
         </Link>
         <Link href="/train" className="poke-card group bg-gradient-to-br from-amber-500/40 via-orange-600/30 to-amber-900/40 p-3 active:scale-95">
           <div className="text-amber-200"><GameIcon name="train" size={28} /></div>
           <p className="mt-1 text-lg font-black text-white">Entraînement</p>
-          <p className="text-[11px] font-bold text-white/80">Booster les stats</p>
+          <p className="text-[12px] font-bold text-white/80">Booster les stats</p>
         </Link>
         <Link href="/pokedex" className="poke-card group bg-gradient-to-br from-violet-500/40 via-fuchsia-600/30 to-violet-900/40 p-3 active:scale-95">
           <div className="text-violet-200"><GameIcon name="codex" size={28} /></div>
           <p className="mt-1 text-lg font-black text-white">Codex</p>
-          <p className="text-[11px] font-bold text-white/80">Toutes les créatures</p>
+          <p className="text-[12px] font-bold text-white/80">Toutes les créatures</p>
         </Link>
       </section>
 
@@ -148,12 +148,12 @@ export default function HomePage() {
               >
                 <div className="flex items-center justify-between">
                   <p className="text-2xl">{zone.emoji}</p>
-                  {!unlocked && <span className="rounded-full bg-black/40 px-2 py-0.5 text-[10px] font-black text-white/80">🔒</span>}
+                  {!unlocked && <span className="rounded-full bg-black/40 px-2 py-0.5 text-[11px] font-black text-white/80">🔒</span>}
                 </div>
                 <p className="mt-1 text-lg font-black text-white drop-shadow">{zone.label}</p>
-                <p className="text-[11px] font-bold text-white/85">Tables {zone.tables}</p>
+                <p className="text-[12px] font-bold text-white/85">Tables {zone.tables}</p>
                 {unlocked && zone.id === state.progress.unlockedZones && (
-                  <span className="mt-1 inline-block rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-black">Zone active</span>
+                  <span className="mt-1 inline-block rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-black">Zone active</span>
                 )}
               </motion.div>
             );
@@ -164,12 +164,12 @@ export default function HomePage() {
       {/* Stats progression */}
       <section className="glass p-3">
         <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-200">Progression</p>
-        <div className="mt-2 grid grid-cols-3 gap-2 text-center text-[11px] font-black">
+        <div className="mt-2 grid grid-cols-3 gap-2 text-center text-[12px] font-black">
           <div className="rounded-xl bg-violet-500/20 px-2 py-1 text-violet-100">Niv joueur {state.progress.level}</div>
           <div className="rounded-xl bg-rose-500/20 px-2 py-1 text-rose-100">{state.progress.battlesWon} victoires</div>
           <div className="rounded-xl bg-emerald-500/20 px-2 py-1 text-emerald-100">Zone {getZoneName(state.progress.unlockedZones)}</div>
         </div>
-        <div className="mt-2 grid grid-cols-2 gap-2 text-center text-[11px] font-black">
+        <div className="mt-2 grid grid-cols-2 gap-2 text-center text-[12px] font-black">
           <div className="rounded-xl bg-orange-500/20 px-2 py-1 text-orange-100">🔥 Streak {state.progress.streakDays ?? 0}j</div>
           <button onClick={() => setAchievementsOpen(true)} className="rounded-xl bg-amber-500/20 px-2 py-1 text-amber-100 active:scale-95">
             🏅 {earnedAchievements.filter(a => a.earned).length}/{ACHIEVEMENTS.length} succès
@@ -185,7 +185,7 @@ export default function HomePage() {
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-200">📋 Quêtes du jour</p>
+              <p className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-200">📋 Quêtes du jour</p>
               <p className="text-sm font-black text-white">
                 {state.progress.dailyQuests.quests.filter((q) => q.claimed).length}
                 {" / "}
@@ -193,7 +193,7 @@ export default function HomePage() {
               </p>
             </div>
             {state.progress.dailyQuests.quests.some((q) => !q.claimed && q.progress >= q.target) && (
-              <span className="rounded-full bg-amber-400 px-2 py-1 text-[10px] font-black text-amber-950 shadow-glowElectric animate-pulse">
+              <span className="rounded-full bg-amber-400 px-2 py-1 text-[11px] font-black text-amber-950 shadow-glowElectric animate-pulse">
                 Récompense !
               </span>
             )}
@@ -244,8 +244,8 @@ export default function HomePage() {
                   <div key={a.id} className={`rounded-xl border p-2 ${a.earned ? "border-amber-300/40 bg-amber-500/15" : "border-white/10 bg-white/5 opacity-50"}`}>
                     <p className="text-2xl">{a.icon}</p>
                     <p className="text-xs font-black text-white">{a.name}</p>
-                    <p className="text-[10px] font-bold text-white/70">{a.description}</p>
-                    {a.earned && <p className="mt-1 text-[10px] font-black uppercase tracking-wide text-amber-200">Débloqué</p>}
+                    <p className="text-[11px] font-bold text-white/70">{a.description}</p>
+                    {a.earned && <p className="mt-1 text-[11px] font-black uppercase tracking-wide text-amber-200">Débloqué</p>}
                   </div>
                 ))}
               </div>

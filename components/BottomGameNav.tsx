@@ -33,7 +33,7 @@ export default function BottomGameNav({ active }: BottomGameNavProps) {
                 }`}
               >
                 <GameIcon name={item.icon} size={22} />
-                <p className="text-[10px] font-black uppercase tracking-wide">{item.label}</p>
+                <p className="text-[11px] font-black uppercase tracking-wide">{item.label}</p>
                 {isActive && <span className="absolute inset-x-3 -top-0.5 h-0.5 rounded-full bg-cyan-300/80 shadow-glow" />}
               </motion.div>
             </Link>

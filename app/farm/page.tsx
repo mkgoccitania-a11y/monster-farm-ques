@@ -361,12 +361,12 @@ export default function FarmPage() {
       />
 
       <div className="flex items-center justify-between px-1">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200">🌾 Ferme — Zone {getZoneName(state.progress.unlockedZones)}</p>
+        <p className="text-[12px] font-black uppercase tracking-[0.2em] text-cyan-200">🌾 Ferme — Zone {getZoneName(state.progress.unlockedZones)}</p>
         <HelpButton onClick={() => setHelp(true)} />
       </div>
 
       <section className="poke-card bg-gradient-to-br from-emerald-500/25 via-green-700/20 to-slate-900/50 p-3">
-        <p className="text-[11px] font-black text-emerald-100">Objectif : {todayGoal}</p>
+        <p className="text-[12px] font-black text-emerald-100">Objectif : {todayGoal}</p>
       </section>
 
       {/* Carte créature : infos à gauche, sprite à droite */}
@@ -390,7 +390,7 @@ export default function FarmPage() {
               <StatBar label="Énergie" value={state.progress.energy} max={state.progress.energyMax} color="cyan" iconName="energy" />
             </div>
 
-            <div className="grid grid-cols-4 gap-1 text-[10px] font-black">
+            <div className="grid grid-cols-4 gap-1 text-[11px] font-black">
               <div className="flex items-center justify-center gap-1 rounded-lg bg-rose-500/20 px-1.5 py-1 text-rose-100"><GameIcon name="strength" size={12} />{creature.stats.attack}</div>
               <div className="flex items-center justify-center gap-1 rounded-lg bg-cyan-500/20 px-1.5 py-1 text-cyan-100"><GameIcon name="speed" size={12} />{creature.stats.speed}</div>
               <div className="flex items-center justify-center gap-1 rounded-lg bg-violet-500/20 px-1.5 py-1 text-violet-100"><GameIcon name="intelligence" size={12} />{creature.stats.intelligence}</div>
@@ -398,14 +398,14 @@ export default function FarmPage() {
             </div>
 
             <div>
-              <p className="mb-1 text-[10px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
+              <p className="mb-1 text-[11px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
               <StatusEffectsBar effects={statusEffects} compact />
             </div>
 
             <div className="space-y-1.5">
               <button
                 onClick={() => setEvoPreviewOpen(true)}
-                className="w-full rounded-xl border border-violet-300/30 bg-violet-500/15 px-2 py-1.5 text-[11px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/25 active:scale-95"
+                className="w-full rounded-xl border border-violet-300/30 bg-violet-500/15 px-2 py-1.5 text-[12px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/25 active:scale-95"
               >
                 ❓ Prochaine évolution {evolutionInfo?.ready ? "(prêt !)" : ""}
               </button>
@@ -414,7 +414,7 @@ export default function FarmPage() {
                   ✨ Faire évoluer !
                 </button>
               )}
-              <p className="text-center text-[10px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
+              <p className="text-center text-[11px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
             </div>
           </div>
 
@@ -435,38 +435,38 @@ export default function FarmPage() {
       <section className="grid grid-cols-4 gap-2">
         <button onClick={handleFeed} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-amber-400/40 to-orange-700/30 p-2 text-center active:scale-95">
           <div className="text-amber-200"><GameIcon name="food" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Nourrir</p>
+          <p className="text-[12px] font-black text-white">Nourrir</p>
         </button>
         <button onClick={handleRest} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-cyan-400/40 to-sky-700/30 p-2 text-center active:scale-95">
           <div className="text-cyan-200"><GameIcon name="energy" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Sieste</p>
+          <p className="text-[12px] font-black text-white">Sieste</p>
         </button>
         <Link href="/train" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-rose-400/40 to-pink-700/30 p-2 text-center active:scale-95">
           <div className="text-rose-200"><GameIcon name="train" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Entrainement</p>
+          <p className="text-[12px] font-black text-white">Entrainement</p>
         </Link>
         <Link href="/battle" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-red-500/40 to-rose-800/30 p-2 text-center active:scale-95">
           <div className="text-red-200"><GameIcon name="battle" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Combat</p>
+          <p className="text-[12px] font-black text-white">Combat</p>
         </Link>
       </section>
 
       {/* Potager : grille 2×2 des 4 cases en pleine largeur */}
       <section className="poke-card bg-gradient-to-br from-amber-500/25 via-orange-600/20 to-slate-900/40 p-2.5">
         <div className="mb-2 flex items-center justify-between">
-          <p className="text-[11px] font-black uppercase tracking-wide text-amber-200">
+          <p className="text-[12px] font-black uppercase tracking-wide text-amber-200">
             Potager
           </p>
           <button
             onClick={() => setCropsHelp(true)}
             aria-label="Cultures"
-            className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[10px] font-black text-amber-100 backdrop-blur-md hover:bg-white/20 active:scale-95"
+            className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[11px] font-black text-amber-100 backdrop-blur-md hover:bg-white/20 active:scale-95"
           >
             <GameIcon name="help" size={11} /> Cultures
           </button>
         </div>
         {/* Détail des graines par type (les verrouillées sont grisées) */}
-        <div className="mb-2 flex flex-wrap items-center gap-1 text-[10px] font-black">
+        <div className="mb-2 flex flex-wrap items-center gap-1 text-[11px] font-black">
           {(["fast", "medium", "slow"] as CropType[]).map((type) => {
             const count = state.progress.seeds[type] ?? 0;
             const cfg = getCropConfig(type);
@@ -520,10 +520,10 @@ export default function FarmPage() {
       </section>
 
       <section className="grid grid-cols-4 gap-2">
-        <button onClick={() => setPanel("shop")} className="btn-soft text-[11px]">🛒 Shop</button>
-        <button onClick={() => setPanel("stats")} className="btn-soft text-[11px]">📊 Stats</button>
-        <button onClick={() => setPanel("team")} className="btn-soft text-[11px]">👥 Équipe ({state.creatures.length}/{state.progress.unlockedCreatures})</button>
-        <button onClick={handleRename} className="btn-soft text-[11px]">✏️ Nom</button>
+        <button onClick={() => setPanel("shop")} className="btn-soft text-[12px]">🛒 Shop</button>
+        <button onClick={() => setPanel("stats")} className="btn-soft text-[12px]">📊 Stats</button>
+        <button onClick={() => setPanel("team")} className="btn-soft text-[12px]">👥 Équipe ({state.creatures.length}/{state.progress.unlockedCreatures})</button>
+        <button onClick={handleRename} className="btn-soft text-[12px]">✏️ Nom</button>
       </section>
 
       <section className="glass p-2 text-center text-sm font-bold text-white/90">{message}</section>
@@ -547,15 +547,15 @@ export default function FarmPage() {
                         className={`poke-card bg-gradient-to-br from-emerald-500/40 to-green-700/30 p-2 text-center ${locked ? "opacity-40" : ""}`}
                       >
                         <p className="text-2xl">{cropIcon[type]}</p>
-                        <p className="text-[11px] font-black text-white">{cropLabel[type]}</p>
-                        <p className="text-[10px] text-amber-200">{cfg.seedCost}P</p>
-                        {locked && <p className="text-[9px] text-rose-200">🔒 Zone {cfg.unlockZone}</p>}
+                        <p className="text-[12px] font-black text-white">{cropLabel[type]}</p>
+                        <p className="text-[11px] text-amber-200">{cfg.seedCost}P</p>
+                        {locked && <p className="text-[10px] text-rose-200">🔒 Zone {cfg.unlockZone}</p>}
                       </button>
                     );
                   })}
                 </div>
                 <div className="mt-2 border-t border-white/10 pt-2">
-                  <p className="mb-2 text-[11px] font-black uppercase tracking-wide text-cyan-200">Consommables</p>
+                  <p className="mb-2 text-[12px] font-black uppercase tracking-wide text-cyan-200">Consommables</p>
                   <button
                     onClick={() => { setPanel("none"); handleBuyEnergyPotion(); }}
                     disabled={state.progress.energy >= state.progress.energyMax}
@@ -565,7 +565,7 @@ export default function FarmPage() {
                       <div className="text-cyan-100"><GameIcon name="potion" size={24} /></div>
                       <div>
                         <p className="text-sm font-black text-white">Potion d'énergie</p>
-                        <p className="text-[10px] font-bold text-cyan-100">+{ENERGY_POTION_GAIN} énergie · 1 multiplication</p>
+                        <p className="text-[11px] font-bold text-cyan-100">+{ENERGY_POTION_GAIN} énergie · 1 multiplication</p>
                       </div>
                     </div>
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/30 px-2 py-0.5 text-xs font-black text-amber-100">
@@ -594,7 +594,7 @@ export default function FarmPage() {
                   </div>
                 )}
                 <div className="space-y-1">
-                  <p className="text-[11px] font-black uppercase text-cyan-200">Améliorer une stat (2 multiplications)</p>
+                  <p className="text-[12px] font-black uppercase text-cyan-200">Améliorer une stat (2 multiplications)</p>
                   <div className="grid grid-cols-2 gap-2 text-xs font-black">
                     <button onClick={() => { setPanel("none"); handleUpgradeStat("attack"); }} className="rounded-xl bg-rose-500/30 px-2 py-1.5">💪 Force</button>
                     <button onClick={() => { setPanel("none"); handleUpgradeStat("speed"); }} className="rounded-xl bg-cyan-500/30 px-2 py-1.5">⚡ Vitesse</button>
@@ -637,8 +637,8 @@ export default function FarmPage() {
                           {active && <span className="text-xs text-yellow-300">★</span>}
                         </div>
                         <p className="mt-1 text-sm font-black">{c.name}</p>
-                        <p className="text-[10px] text-white/70">Forme {c.evolution_stage} · Table × {c.multiplication_table}</p>
-                        <div className="mt-1 grid grid-cols-4 gap-1 text-[10px] font-black">
+                        <p className="text-[11px] text-white/70">Forme {c.evolution_stage} · Table × {c.multiplication_table}</p>
+                        <div className="mt-1 grid grid-cols-4 gap-1 text-[11px] font-black">
                           <span className="rounded bg-rose-500/20 px-1 py-0.5 text-rose-100">{c.stats.attack}</span>
                           <span className="rounded bg-cyan-500/20 px-1 py-0.5 text-cyan-100">{c.stats.speed}</span>
                           <span className="rounded bg-violet-500/20 px-1 py-0.5 text-violet-100">{c.stats.intelligence}</span>
@@ -648,7 +648,7 @@ export default function FarmPage() {
                     );
                   })}
                 </div>
-                <p className="text-[10px] text-white/60">Une nouvelle créature est débloquée tous les 5 niveaux joueur.</p>
+                <p className="text-[11px] text-white/60">Une nouvelle créature est débloquée tous les 5 niveaux joueur.</p>
               </div>
             )}
 

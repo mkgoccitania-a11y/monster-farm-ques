@@ -22,7 +22,7 @@ const iconByEffect: Record<string, GameIconName> = {
 export default function StatusEffectsBar({ effects, compact = false }: StatusEffectsBarProps) {
   if (effects.length === 0) {
     return (
-      <div className="flex items-center justify-center gap-1 rounded-xl border border-emerald-300/30 bg-emerald-500/10 px-2 py-1 text-center text-[10px] font-black text-emerald-100">
+      <div className="flex items-center justify-center gap-1 rounded-xl border border-emerald-300/30 bg-emerald-500/10 px-2 py-1 text-center text-[11px] font-black text-emerald-100">
         <GameIcon name="spark" size={12} />
         <span>Aucun effet — créature en forme</span>
       </div>
@@ -37,7 +37,7 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
             key={eff.id}
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center gap-1.5 rounded-xl border px-2 py-1 text-[10px] font-black backdrop-blur-md ${
+            className={`flex items-center gap-1.5 rounded-xl border px-2 py-1 text-[11px] font-black backdrop-blur-md ${
               eff.kind === "buff"
                 ? "border-emerald-300/40 bg-emerald-500/15 text-emerald-50"
                 : eff.severity === "major"
@@ -49,7 +49,7 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
             <GameIcon name={icon} size={16} />
             <div className="flex-1">
               <p className="leading-tight">{eff.label}</p>
-              <p className={`text-[9px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
+              <p className={`text-[10px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
             </div>
           </motion.div>
         );

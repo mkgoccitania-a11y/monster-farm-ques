@@ -29,7 +29,7 @@ interface TypeBadgeProps {
 }
 
 export default function TypeBadge({ type, size = "sm" }: TypeBadgeProps) {
-  const sizing = size === "xs" ? "px-1.5 py-0.5 text-[10px]" : size === "md" ? "px-3 py-1 text-sm" : "px-2 py-0.5 text-xs";
+  const sizing = size === "xs" ? "px-1.5 py-0.5 text-[11px]" : size === "md" ? "px-3 py-1 text-sm" : "px-2 py-0.5 text-xs";
   return (
     <span className={`inline-flex items-center gap-1 rounded-full font-black shadow-bubble ${sizing} ${cls[type]}`}>
       <span>{icons[type]}</span>

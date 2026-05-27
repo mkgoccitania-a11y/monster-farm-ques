@@ -139,7 +139,7 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
 
       {/* Contenu */}
       <div className="relative z-10">
-        <div className="flex items-center justify-between text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">
+        <div className="flex items-center justify-between text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">
           <span>{plot.nom}</span>
           <span>{statusLabel[plot.statut]}</span>
         </div>
@@ -148,11 +148,11 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
           {isLocked && (
             <div className="space-y-2 text-center">
               <div className="flex justify-center text-white/70"><GameIcon name="lock" size={28} /></div>
-              <p className="text-[11px] font-black text-white/80">Case fermée</p>
+              <p className="text-[12px] font-black text-white/80">Case fermée</p>
               <button
                 onClick={() => onBuy(plot.id)}
                 disabled={!canBuy || isBuying}
-                className="flex w-full items-center justify-center gap-1 rounded-xl border border-amber-300/40 bg-gradient-to-br from-amber-400/30 to-orange-600/30 px-2 py-1.5 text-[11px] font-black text-amber-100 backdrop-blur-md disabled:opacity-40 active:scale-95"
+                className="flex w-full items-center justify-center gap-1 rounded-xl border border-amber-300/40 bg-gradient-to-br from-amber-400/30 to-orange-600/30 px-2 py-1.5 text-[12px] font-black text-amber-100 backdrop-blur-md disabled:opacity-40 active:scale-95"
               >
                 Acheter
                 <span className="flex items-center gap-0.5"><GameIcon name="coin" size={12} /> {plot.prix}</span>
@@ -162,7 +162,7 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
 
           {!isLocked && plot.statut === "disponible" && (
             <div className="space-y-1.5">
-              <p className="text-center text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">Sol prêt — choisis une graine</p>
+              <p className="text-center text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">Sol prêt — choisis une graine</p>
               <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${Math.max(1, unlockedCrops.length)}, minmax(0, 1fr))` }}>
                 {unlockedCrops.map((type) => {
                   const count = seedsByType[type] ?? 0;
@@ -181,7 +181,7 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
                         hasSeed
                           ? `border-white/20 ${cropColor[type]} text-white`
                           : "border-amber-300/40 from-slate-700/60 to-slate-900/70 text-amber-100"
-                      } px-1 py-1 text-[10px] font-black backdrop-blur-md active:scale-95`}
+                      } px-1 py-1 text-[11px] font-black backdrop-blur-md active:scale-95`}
                     >
                       <GameIcon name={hasSeed ? cropIcon[type] : "coin"} size={12} />
                       <span>{cropLabel[type]} ({count})</span>
@@ -192,7 +192,7 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
               {unlockedCrops.length < 3 && (
                 <button
                   onClick={(e) => { e.stopPropagation(); onAskCropsInfo?.(); }}
-                  className="flex w-full items-center justify-center gap-1 rounded-md border border-white/15 bg-white/10 px-1 py-1 text-[9px] font-black text-white/90 backdrop-blur-md active:scale-95 hover:bg-white/20"
+                  className="flex w-full items-center justify-center gap-1 rounded-md border border-white/15 bg-white/10 px-1 py-1 text-[10px] font-black text-white/90 backdrop-blur-md active:scale-95 hover:bg-white/20"
                 >
                   <GameIcon name="lock" size={10} />
                   <span>Voir cultures verrouillées</span>
@@ -204,7 +204,7 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
 
           {!isLocked && isGrowing && (
             <div className="space-y-1 text-center">
-              <p className="text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">{plot.planteActuelle ? cropLabel[plot.planteActuelle] : "Culture"}</p>
+              <p className="text-[12px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">{plot.planteActuelle ? cropLabel[plot.planteActuelle] : "Culture"}</p>
               {/* Mini barre de progression */}
               <div className="mx-auto h-1.5 w-full max-w-[120px] overflow-hidden rounded-full bg-black/40">
                 <motion.div
@@ -214,18 +214,18 @@ export default function FarmPlotTile({ plot, isBuying, canBuy, canPlant, unlocke
                   transition={{ duration: 0.8 }}
                 />
               </div>
-              <p className="text-[10px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">{plot.tempsRestantLabel ?? "..."}</p>
+              <p className="text-[11px] font-black text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.85)]">{plot.tempsRestantLabel ?? "..."}</p>
             </div>
           )}
 
           {!isLocked && isReady && (
             <div className="space-y-1.5 text-center">
-              <p className="text-[11px] font-black text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+              <p className="text-[12px] font-black text-amber-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
                 ✨ {plot.planteActuelle ? cropLabel[plot.planteActuelle] : "Culture"} prête !
               </p>
               <button
                 onClick={() => onHarvest(plot.id)}
-                className="flex w-full items-center justify-center gap-1 rounded-xl border border-amber-300/60 bg-gradient-to-br from-amber-400 to-orange-500 px-2 py-1.5 text-[11px] font-black text-amber-950 shadow-glowElectric active:scale-95"
+                className="flex w-full items-center justify-center gap-1 rounded-xl border border-amber-300/60 bg-gradient-to-br from-amber-400 to-orange-500 px-2 py-1.5 text-[12px] font-black text-amber-950 shadow-glowElectric active:scale-95"
               >
                 <GameIcon name="check" size={14} />
                 <span>Récolter</span>

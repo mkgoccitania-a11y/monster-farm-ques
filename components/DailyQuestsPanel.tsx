@@ -47,7 +47,7 @@ export default function DailyQuestsPanel({ quests, onClaim, open, onClose }: Dai
               <button onClick={onClose} aria-label="Fermer" className="rounded-full bg-white/10 p-1.5 text-white"><GameIcon name="close" size={14} /></button>
             </div>
 
-            <p className="mt-2 text-[11px] text-white/70">Termine ces objectifs avant minuit pour empocher les bonus. Nouvelles quêtes chaque jour.</p>
+            <p className="mt-2 text-[12px] text-white/70">Termine ces objectifs avant minuit pour empocher les bonus. Nouvelles quêtes chaque jour.</p>
 
             <div className="mt-3 space-y-2">
               {quests.length === 0 && (
@@ -71,11 +71,11 @@ export default function DailyQuestsPanel({ quests, onClaim, open, onClose }: Dai
                       <div className="text-white"><GameIcon name={kindIcon[q.kind]} size={22} /></div>
                       <div className="flex-1">
                         <p className="text-sm font-black text-white">{q.label}</p>
-                        <p className="text-[10px] font-black text-white/60">
+                        <p className="text-[11px] font-black text-white/60">
                           {q.progress} / {q.target}
                         </p>
                       </div>
-                      {q.claimed && <span className="inline-flex items-center gap-0.5 text-[10px] font-black text-emerald-200"><GameIcon name="check" size={11} /> RÉCLAMÉ</span>}
+                      {q.claimed && <span className="inline-flex items-center gap-0.5 text-[11px] font-black text-emerald-200"><GameIcon name="check" size={11} /> RÉCLAMÉ</span>}
                     </div>
 
                     <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
@@ -87,7 +87,7 @@ export default function DailyQuestsPanel({ quests, onClaim, open, onClose }: Dai
                       />
                     </div>
 
-                    <div className="mt-2 flex items-center justify-between text-[11px] font-black">
+                    <div className="mt-2 flex items-center justify-between text-[12px] font-black">
                       <div className="flex items-center gap-2 text-amber-100">
                         <span className="inline-flex items-center gap-0.5"><GameIcon name="coin" size={11} />{q.reward.coins}</span>
                         <span className="inline-flex items-center gap-0.5"><GameIcon name="star" size={11} />{q.reward.xp}</span>
@@ -96,7 +96,7 @@ export default function DailyQuestsPanel({ quests, onClaim, open, onClose }: Dai
                       {!q.claimed && done && (
                         <button
                           onClick={() => onClaim(q.id)}
-                          className="rounded-full border border-amber-300/50 bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-[11px] font-black text-amber-950 shadow-glowElectric active:scale-95"
+                          className="rounded-full border border-amber-300/50 bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-[12px] font-black text-amber-950 shadow-glowElectric active:scale-95"
                         >
                           Réclamer
                         </button>

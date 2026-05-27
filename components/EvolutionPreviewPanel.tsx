@@ -72,8 +72,8 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
                     <div className="flex h-24 items-center justify-center overflow-hidden rounded-xl bg-black/20">
                       <img src={currentSprite} alt={currentName} className="h-full w-full object-cover" draggable={false} />
                     </div>
-                    <p className="mt-1 text-[10px] font-black uppercase tracking-wide text-white/70">Forme {creature.evolution_stage}</p>
-                    <p className="text-[11px] font-black text-white">{currentName}</p>
+                    <p className="mt-1 text-[11px] font-black uppercase tracking-wide text-white/70">Forme {creature.evolution_stage}</p>
+                    <p className="text-[12px] font-black text-white">{currentName}</p>
                   </div>
 
                   <div className="text-2xl font-black text-violet-300">→</div>
@@ -86,8 +86,8 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
                         <span className="text-4xl font-black text-white/30">?</span>
                       )}
                     </div>
-                    <p className="mt-1 text-[10px] font-black uppercase tracking-wide text-violet-200">Forme {target}</p>
-                    <p className="text-[11px] font-black text-violet-100">{progress.ready ? nextName : "Mystère"}</p>
+                    <p className="mt-1 text-[11px] font-black uppercase tracking-wide text-violet-200">Forme {target}</p>
+                    <p className="text-[12px] font-black text-violet-100">{progress.ready ? nextName : "Mystère"}</p>
                   </div>
                 </div>
 
@@ -96,13 +96,13 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
 
                 {/* Conditions */}
                 <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3">
-                  <p className="text-[11px] font-black uppercase tracking-wide text-cyan-200">
+                  <p className="text-[12px] font-black uppercase tracking-wide text-cyan-200">
                     Conditions ({requirementsDone}/{requirementsCount})
                   </p>
                   <ul className="mt-1.5 space-y-1 text-xs">
                     {progress.requirements.map((req, i) => (
                       <li key={i} className={`flex items-center gap-2 font-bold ${req.done ? "text-emerald-200" : "text-white/70"}`}>
-                        <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-black ${req.done ? "bg-emerald-500/40" : "bg-white/10"}`}>
+                        <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[12px] font-black ${req.done ? "bg-emerald-500/40" : "bg-white/10"}`}>
                           {req.done ? "✓" : "·"}
                         </span>
                         {req.label}
@@ -113,9 +113,9 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
 
                 {/* Effet (multiplicateur) */}
                 <div className="mt-2 rounded-2xl border border-amber-300/30 bg-amber-500/15 p-3">
-                  <p className="text-[11px] font-black uppercase tracking-wide text-amber-200">Effet à l'évolution</p>
+                  <p className="text-[12px] font-black uppercase tracking-wide text-amber-200">Effet à l'évolution</p>
                   <p className="mt-1 text-sm font-black text-white">Toutes les stats × {multiplier}</p>
-                  <div className="mt-2 grid grid-cols-4 gap-1 text-center text-[11px] font-black">
+                  <div className="mt-2 grid grid-cols-4 gap-1 text-center text-[12px] font-black">
                     <div className="flex items-center justify-center gap-1 rounded-lg bg-rose-500/20 px-2 py-1 text-rose-100">
                       <GameIcon name="strength" size={12} />{creature.stats.attack} → <span className="text-rose-50">{projected.attack}</span>
                     </div>
@@ -130,7 +130,7 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
                     </div>
                   </div>
                   {target >= 2 && !creature.specialUnlocked && (
-                    <p className="mt-2 text-[10px] font-black text-fuchsia-200">✨ Débloque l'attaque Spéciale en combat</p>
+                    <p className="mt-2 text-[11px] font-black text-fuchsia-200">✨ Débloque l'attaque Spéciale en combat</p>
                   )}
                 </div>
 
@@ -140,7 +140,7 @@ export default function EvolutionPreviewPanel({ open, creature, progress, onClos
                     ✨ Faire évoluer maintenant (1 multiplication)
                   </button>
                 ) : (
-                  <div className="mt-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-[11px] font-black text-white/70">
+                  <div className="mt-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-[12px] font-black text-white/70">
                     {progress.ready ? "Prêt à évoluer !" : "Continue à jouer pour remplir les conditions."}
                   </div>
                 )}

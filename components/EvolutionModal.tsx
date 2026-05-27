@@ -59,22 +59,22 @@ export default function EvolutionModal({ open, previous, current, onClose }: Evo
 
             <div className="mt-4 grid grid-cols-2 gap-3">
               <div className="rounded-2xl border border-white/15 bg-white/5 p-2 text-center backdrop-blur-md">
-                <p className="text-[10px] font-black uppercase tracking-wide text-white/60">Avant</p>
+                <p className="text-[11px] font-black uppercase tracking-wide text-white/60">Avant</p>
                 <div className="flex justify-center">
                   <div className="h-28 w-28 overflow-hidden rounded-2xl">
                     <img src={prevSprite} alt={oldName} className="h-full w-full object-cover" draggable={false} />
                   </div>
                 </div>
-                <p className="text-[11px] font-black text-white/80">{oldName}</p>
+                <p className="text-[12px] font-black text-white/80">{oldName}</p>
               </div>
               <div className="rounded-2xl border border-violet-300/40 bg-violet-500/15 p-2 text-center shadow-glow backdrop-blur-md">
-                <p className="text-[10px] font-black uppercase tracking-wide text-violet-200">Après</p>
+                <p className="text-[11px] font-black uppercase tracking-wide text-violet-200">Après</p>
                 <motion.div className="flex justify-center" animate={{ scale: [1, 1.08, 1] }} transition={{ duration: 1.2, repeat: Infinity }}>
                   <div className="h-28 w-28 overflow-hidden rounded-2xl">
                     <img src={currSprite} alt={newName} className="h-full w-full object-cover" draggable={false} />
                   </div>
                 </motion.div>
-                <p className="text-[11px] font-black text-violet-200">{newName}</p>
+                <p className="text-[12px] font-black text-violet-200">{newName}</p>
               </div>
             </div>
 

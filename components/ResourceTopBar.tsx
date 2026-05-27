@@ -48,7 +48,7 @@ export default function ResourceTopBar({ level, title, coins, happiness, energy,
           <span>{happiness}</span>
         </div>
         <div
-          className={`flex flex-col items-center gap-0 rounded-xl border px-2 py-1 text-[11px] font-black backdrop-blur-md ${
+          className={`flex flex-col items-center gap-0 rounded-xl border px-2 py-1 text-[12px] font-black backdrop-blur-md ${
             energyRegenFast ? "border-amber-300/40 bg-amber-400/20 text-amber-100" : "border-white/15 bg-cyan-400/15 text-cyan-100"
           }`}
           title={energyRegenFast ? "Régen accélérée : bonheur élevé !" : "Régen normale"}
@@ -58,7 +58,7 @@ export default function ResourceTopBar({ level, title, coins, happiness, energy,
             <span>{energy}{energyMax !== undefined ? `/${energyMax}` : ""}</span>
           </div>
           {typeof energyRefillMs === "number" && energyRefillMs > 0 && (
-            <span className="text-[9px] font-black opacity-80">
+            <span className="text-[10px] font-black opacity-80">
               +1 dans {formatMs(energyRefillMs)}{energyRegenFast ? " ⚡" : ""}
             </span>
           )}

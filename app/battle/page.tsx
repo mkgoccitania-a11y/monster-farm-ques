@@ -412,7 +412,7 @@ export default function BattlePage() {
       />
 
       <div className="flex items-center justify-between px-1">
-        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-cyan-200">⚔️ Combat</p>
+        <p className="text-[12px] font-black uppercase tracking-[0.2em] text-cyan-200">⚔️ Combat</p>
         <HelpButton onClick={() => setHelp(true)} />
       </div>
 
@@ -432,12 +432,12 @@ export default function BattlePage() {
           transition={{ duration: 1.8, repeat: Infinity }}
         >
           <p className="text-sm font-black text-white">👑 Un BOSS de zone t'attend !</p>
-          <p className="text-[11px] font-bold text-white/80">Vainquez-le pour débloquer la zone suivante. Gros loot garanti.</p>
+          <p className="text-[12px] font-bold text-white/80">Vainquez-le pour débloquer la zone suivante. Gros loot garanti.</p>
         </motion.div>
       )}
 
       {!bossAvailable && status === "idle" && state.progress.unlockedZones < 4 && (
-        <div className="rounded-2xl border border-white/15 bg-white/5 p-2 text-center text-[11px] font-black text-white/70 backdrop-blur-md">
+        <div className="rounded-2xl border border-white/15 bg-white/5 p-2 text-center text-[12px] font-black text-white/70 backdrop-blur-md">
           Encore {Math.max(0, 5 - zoneVictories)} victoire(s) avant le boss de zone
         </div>
       )}
@@ -471,8 +471,8 @@ export default function BattlePage() {
               <p className="text-xs font-black uppercase tracking-wide text-white/70">Ennemi</p>
               <div className="flex items-center gap-1">
                 <p className="text-lg font-black text-white">{enemy?.name ?? "—"}</p>
-                {enemy?.rank === "boss" && <span className="inline-flex items-center gap-1 rounded-full bg-fuchsia-500/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white"><GameIcon name="boss" size={12} /> Boss</span>}
-                {enemy?.rank === "elite" && <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white"><GameIcon name="elite" size={12} /> Élite</span>}
+                {enemy?.rank === "boss" && <span className="inline-flex items-center gap-1 rounded-full bg-fuchsia-500/60 px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-white"><GameIcon name="boss" size={12} /> Boss</span>}
+                {enemy?.rank === "elite" && <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/60 px-2 py-0.5 text-[11px] font-black uppercase tracking-wide text-white"><GameIcon name="elite" size={12} /> Élite</span>}
               </div>
               {enemy && (
                 <div className="mt-0.5 flex items-center gap-1">
@@ -555,9 +555,9 @@ export default function BattlePage() {
           <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-slate-900/60 to-indigo-950/60 p-3 backdrop-blur-md">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-200">🔭 Repérage</p>
+                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-200">🔭 Repérage</p>
                 <p className="text-base font-black text-white">{scoutedEnemy.name}</p>
-                <div className="mt-0.5 flex items-center gap-1 text-[11px]">
+                <div className="mt-0.5 flex items-center gap-1 text-[12px]">
                   <TypeBadge type={scoutedEnemy.type} size="xs" />
                   <span className="chip">{getZoneName(scoutedEnemy.zone)}</span>
                   <span className="chip">× {scoutedEnemy.table_focus}</span>
@@ -628,12 +628,12 @@ export default function BattlePage() {
                 >
                   <div className="flex items-center justify-between text-white">
                     <GameIcon name={actionIcon[action]} size={22} />
-                    <span className="rounded-full bg-black/30 px-2 py-0.5 text-[10px] font-black">{statValue}</span>
+                    <span className="rounded-full bg-black/30 px-2 py-0.5 text-[11px] font-black">{statValue}</span>
                     {locked && <GameIcon name="lock" size={14} />}
                   </div>
                   <p className="mt-1 text-base font-black text-white">{actionLabel[action]}</p>
-                  <p className="text-[10px] font-bold text-white/85">{actionDesc[action]}</p>
-                  <p className="mt-0.5 text-[9px] font-black uppercase tracking-wide text-white/60">
+                  <p className="text-[11px] font-bold text-white/85">{actionDesc[action]}</p>
+                  <p className="mt-0.5 text-[10px] font-black uppercase tracking-wide text-white/60">
                     Atelier {actionStat[action]}
                   </p>
                 </motion.button>
@@ -686,10 +686,10 @@ export default function BattlePage() {
             </button>
           )}
           {status === "won" && enemy?.rank === "boss" && (
-            <p className="mt-3 text-[11px] font-black text-fuchsia-200">👑 Les boss ne peuvent pas être capturés.</p>
+            <p className="mt-3 text-[12px] font-black text-fuchsia-200">👑 Les boss ne peuvent pas être capturés.</p>
           )}
           {captureDone && status === "won" && (
-            <p className="mt-3 text-[11px] font-black text-emerald-200">🎒 Capture terminée pour ce combat.</p>
+            <p className="mt-3 text-[12px] font-black text-emerald-200">🎒 Capture terminée pour ce combat.</p>
           )}
 
           <button onClick={resetBattle} className="btn-secondary mt-3 w-full">Nouveau duel</button>

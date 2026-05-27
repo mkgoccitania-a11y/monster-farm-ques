@@ -74,7 +74,7 @@ export default function CreatureCard({ creature, mood = "idle", reaction, state,
           <div className="absolute left-2 top-2 z-20">
             <TypeBadge type={creature.type} size="xs" />
           </div>
-          <div className="absolute right-2 top-2 z-20 rounded-full border border-white/25 bg-white/15 px-2 py-0.5 text-[10px] font-black text-white backdrop-blur-md">
+          <div className="absolute right-2 top-2 z-20 rounded-full border border-white/25 bg-white/15 px-2 py-0.5 text-[11px] font-black text-white backdrop-blur-md">
             Forme {creature.evolution_stage}
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function CreatureCard({ creature, mood = "idle", reaction, state,
           <CreatureSpeechBubble state={state} creature={creature} override={reaction || undefined} vertical="bottom" />
         ) : reaction ? (
           <div className="pointer-events-none absolute -bottom-3 z-30 flex w-full justify-center">
-            <div className="max-w-[90%] rounded-2xl border border-indigo-200/60 bg-gradient-to-br from-indigo-500/90 to-violet-600/90 px-3 py-1 text-center text-[11px] font-black text-white shadow-glow backdrop-blur-md">
+            <div className="max-w-[90%] rounded-2xl border border-indigo-200/60 bg-gradient-to-br from-indigo-500/90 to-violet-600/90 px-3 py-1 text-center text-[12px] font-black text-white shadow-glow backdrop-blur-md">
               {reaction}
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function CreatureCard({ creature, mood = "idle", reaction, state,
 
       <div className="mt-4 text-center">
         <p className={`${labelSize} font-black leading-tight text-white drop-shadow`}>{creature.name}</p>
-        <p className="text-[11px] font-semibold text-white/70">{stageName} · {meta.display}</p>
+        <p className="text-[12px] font-semibold text-white/70">{stageName} · {meta.display}</p>
       </div>
     </div>
   );

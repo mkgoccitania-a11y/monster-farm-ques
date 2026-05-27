@@ -123,7 +123,7 @@ export default function PokedexPage() {
             >
               {/* En-tête : numéro + type */}
               <div className="flex items-center justify-between">
-                <span className="rounded-full border border-white/20 bg-black/40 px-2 py-0.5 text-[10px] font-black text-white/90">
+                <span className="rounded-full border border-white/20 bg-black/40 px-2 py-0.5 text-[11px] font-black text-white/90">
                   N°{String(entry.idx + 1).padStart(3, "0")}
                 </span>
                 <TypeBadge type={entry.pool.type} size="xs" />
@@ -146,15 +146,15 @@ export default function PokedexPage() {
                     {/* Badge statut en bas à droite de la vignette */}
                     <div className="absolute bottom-1 right-1">
                       {entry.isCaptured ? (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-1.5 py-0.5 text-[9px] font-black text-amber-950 shadow-bubble">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-1.5 py-0.5 text-[10px] font-black text-amber-950 shadow-bubble">
                           ✓ F{entry.captured?.bestStage ?? 1}
                         </span>
                       ) : entry.isSeen ? (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-1.5 py-0.5 text-[9px] font-black text-sky-50 shadow-bubble">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-1.5 py-0.5 text-[10px] font-black text-sky-50 shadow-bubble">
                           👁 Vue {entry.seenCount > 1 ? `×${entry.seenCount}` : ""}
                         </span>
                       ) : entry.owned ? (
-                        <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-1.5 py-0.5 text-[9px] font-black text-violet-50 shadow-bubble">
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-1.5 py-0.5 text-[10px] font-black text-violet-50 shadow-bubble">
                           ★ Dressée
                         </span>
                       ) : null}
@@ -171,7 +171,7 @@ export default function PokedexPage() {
                     >
                       ?
                     </motion.div>
-                    <p className="text-[9px] font-black uppercase tracking-widest text-white/40">Inconnu</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Inconnu</p>
                   </div>
                 )}
                 {/* Reflet glass */}
@@ -183,14 +183,14 @@ export default function PokedexPage() {
                 <p className="truncate text-center text-sm font-black text-white">
                   {entry.isDiscovered ? (entry.owned?.name ?? entry.pool.name) : "???"}
                 </p>
-                <div className="flex items-center justify-center gap-1 text-[10px] font-black text-white/60">
+                <div className="flex items-center justify-center gap-1 text-[11px] font-black text-white/60">
                   <span className="rounded bg-white/10 px-1.5 py-0.5">×{entry.pool.table}</span>
                   <span className="rounded bg-white/10 px-1.5 py-0.5">{entry.owned ? `Niv ${entry.owned.level}` : "Niv —"}</span>
                 </div>
               </div>
 
               {!entry.isUnlocked && !entry.owned && (
-                <div className="mt-1.5 rounded-full bg-black/40 px-2 py-0.5 text-center text-[9px] font-black text-white/65">
+                <div className="mt-1.5 rounded-full bg-black/40 px-2 py-0.5 text-center text-[10px] font-black text-white/65">
                   🔒 Niv joueur +{entry.idx * 5}
                 </div>
               )}
@@ -237,7 +237,7 @@ export default function PokedexPage() {
                   ) : (
                     <div className="flex flex-col items-center justify-center gap-1">
                       <span className="text-6xl font-black text-white/30" style={{ textShadow: "0 0 20px rgba(255,255,255,0.18)" }}>?</span>
-                      <p className="text-[9px] font-black uppercase tracking-widest text-white/40">Inconnu</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Inconnu</p>
                     </div>
                   )}
                   <div className="pointer-events-none absolute inset-x-2 top-2 h-3 rounded-full bg-white/10 blur-md" />
@@ -248,22 +248,22 @@ export default function PokedexPage() {
                   <div className="mt-1 flex flex-wrap items-center gap-1">
                     <TypeBadge type={selected.pool.type} />
                     {selected.isCaptured && (
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-2 py-0.5 text-[10px] font-black text-amber-950">
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-2 py-0.5 text-[11px] font-black text-amber-950">
                         ✓ Capturée ×{selected.captured?.count ?? 1} · Forme {selected.captured?.bestStage ?? 1}
                       </span>
                     )}
                     {!selected.isCaptured && selected.isSeen && (
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-2 py-0.5 text-[10px] font-black text-sky-50">
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-2 py-0.5 text-[11px] font-black text-sky-50">
                         👁 Vue ×{selected.seenCount}
                       </span>
                     )}
                     {selected.owned && (
-                      <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-2 py-0.5 text-[10px] font-black text-violet-50">
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-2 py-0.5 text-[11px] font-black text-violet-50">
                         ★ Dressée
                       </span>
                     )}
                   </div>
-                  <p className="mt-2 text-[11px] italic text-white/70">"{lored?.tagline}"</p>
+                  <p className="mt-2 text-[12px] italic text-white/70">"{lored?.tagline}"</p>
                 </div>
               </div>
 
@@ -291,13 +291,13 @@ export default function PokedexPage() {
                           {b.rank === "elite" && " · ✦ Élite"}
                           {b.rank !== "common" || b.temperament !== "balanced" ? ` · Tempérament : ${b.temperament}` : ""}
                         </p>
-                        <div className="mt-2 grid grid-cols-4 gap-1 text-center text-[10px] font-black">
+                        <div className="mt-2 grid grid-cols-4 gap-1 text-center text-[11px] font-black">
                           <div className="rounded-lg bg-rose-500/20 px-1 py-0.5 text-rose-100">💪 {b.attack}</div>
                           <div className="rounded-lg bg-cyan-500/20 px-1 py-0.5 text-cyan-100">⚡ {b.speed}</div>
                           <div className="rounded-lg bg-emerald-500/20 px-1 py-0.5 text-emerald-100">🛡 {b.defense}</div>
                           <div className="rounded-lg bg-pink-500/20 px-1 py-0.5 text-pink-100">❤️ {b.maxHp}</div>
                         </div>
-                        <p className="mt-1 text-[10px] text-sky-100/70">Stats remplacées automatiquement si tu rencontres un spécimen plus difficile.</p>
+                        <p className="mt-1 text-[11px] text-sky-100/70">Stats remplacées automatiquement si tu rencontres un spécimen plus difficile.</p>
                       </>
                     );
                   })()}
@@ -311,7 +311,7 @@ export default function PokedexPage() {
                     <p className="mt-1 text-white/80">{lored?.story}</p>
                   </div>
 
-                  <div className="mt-2 grid grid-cols-3 gap-2 text-[11px]">
+                  <div className="mt-2 grid grid-cols-3 gap-2 text-[12px]">
                     <div className="rounded-xl bg-emerald-500/20 p-2 text-emerald-100">
                       <p className="font-black uppercase tracking-wide">Force</p>
                       <p>{lored?.strength}</p>
@@ -332,7 +332,7 @@ export default function PokedexPage() {
 
                   {/* Évolutions */}
                   <div className="mt-3">
-                    <p className="text-[11px] font-black uppercase tracking-wide text-white/70">Lignée d'évolution</p>
+                    <p className="text-[12px] font-black uppercase tracking-wide text-white/70">Lignée d'évolution</p>
                     <div className="mt-1 grid grid-cols-3 gap-2">
                       {[1, 2, 3].map((stage) => {
                         const owned = selected.owned;
@@ -354,8 +354,8 @@ export default function PokedexPage() {
                                 </div>
                               )}
                             </div>
-                            <p className={`mt-1 text-[10px] font-black ${reached ? "text-violet-100" : "text-white/50"}`}>{reached ? name : "???"}</p>
-                            <p className="text-[9px] text-white/60">Forme {stage}</p>
+                            <p className={`mt-1 text-[11px] font-black ${reached ? "text-violet-100" : "text-white/50"}`}>{reached ? name : "???"}</p>
+                            <p className="text-[10px] text-white/60">Forme {stage}</p>
                           </div>
                         );
                       })}
@@ -364,7 +364,7 @@ export default function PokedexPage() {
 
                   {selected.owned && (
                     <>
-                      <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[11px] font-black">
+                      <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[12px] font-black">
                         <div className="rounded-lg bg-rose-500/20 px-2 py-1 text-rose-100">💪 {selected.owned.stats.attack}</div>
                         <div className="rounded-lg bg-cyan-500/20 px-2 py-1 text-cyan-100">⚡ {selected.owned.stats.speed}</div>
                         <div className="rounded-lg bg-violet-500/20 px-2 py-1 text-violet-100">🧠 {selected.owned.stats.intelligence}</div>
@@ -392,7 +392,7 @@ export default function PokedexPage() {
               ) : selected.isSeen ? null : (
                 <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-center text-sm text-white/70">
                   <p>Cette créature reste à découvrir.</p>
-                  <p className="mt-1 text-[11px]">Continue à monter de niveau pour la rencontrer en combat.</p>
+                  <p className="mt-1 text-[12px]">Continue à monter de niveau pour la rencontrer en combat.</p>
                 </div>
               )}
             </motion.div>

@@ -8,6 +8,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Tailwind named text sizes bumped +1px each pour une lisibilité enfant
+      fontSize: {
+        xs:    ["13px", { lineHeight: "1.4" }],   // 12 → 13
+        sm:    ["15px", { lineHeight: "1.45" }],  // 14 → 15
+        base:  ["17px", { lineHeight: "1.55" }],  // 16 → 17
+        lg:    ["19px", { lineHeight: "1.5" }],   // 18 → 19
+        xl:    ["21px", { lineHeight: "1.45" }],  // 20 → 21
+        "2xl": ["25px", { lineHeight: "1.35" }],  // 24 → 25
+        "3xl": ["31px", { lineHeight: "1.3" }],   // 30 → 31
+        "4xl": ["37px", { lineHeight: "1.25" }]   // 36 → 37
+      },
       colors: {
         // Palette moderne arcade
         skyJoy: "#71D4FF",

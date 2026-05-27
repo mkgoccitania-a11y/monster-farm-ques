@@ -11,7 +11,7 @@ export default function QuestionBox({ question, subtitle }: QuestionBoxProps) {
       <div className="absolute inset-0 -z-10 opacity-30" style={{
         background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 60%)"
       }} />
-      {subtitle && <p className="text-[11px] font-black uppercase tracking-widest text-white/80">{subtitle}</p>}
+      {subtitle && <p className="text-[12px] font-black uppercase tracking-widest text-white/80">{subtitle}</p>}
       <p className="mt-2 text-5xl font-black text-white drop-shadow-lg">
         <span className="text-amber-200">{question.left}</span>
         <span className="mx-2 text-white/70">×</span>
