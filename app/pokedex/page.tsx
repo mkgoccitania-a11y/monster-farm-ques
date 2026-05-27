@@ -16,29 +16,29 @@ const lore: Record<CreatureType, { tagline: string; story: string; weakness: str
   fire: {
     tagline: "Petit feu qui rugit, grand soleil qui brûle.",
     story: "Flamy vit dans les pierres chaudes et adore les défis rapides. À chaque évolution, sa flamme grandit comme une crinière.",
-    weakness: "Subit plus de dégâts contre les créatures Eau.",
-    strength: "Très efficace face aux créatures Plante.",
+    weakness: "Faible vs 💧 Eau : l'eau éteint la flamme.",
+    strength: "Fort vs 🌿 Plante : le feu brûle les feuilles.",
     habitat: "Volcans, plaines sèches, sources chaudes."
   },
   water: {
     tagline: "Vague calme, vague rapide.",
     story: "Bubbli respire dans la brume et glisse sur les rivières. Sa goutte du dessus de la tête grandit avec lui.",
-    weakness: "Subit plus de dégâts contre les créatures Électrique et Plante.",
-    strength: "Très efficace face aux créatures Feu.",
+    weakness: "Faible vs ⚡ Électrique : un éclair électrocute toute l'eau.",
+    strength: "Fort vs 🔥 Feu : la vague éteint la flamme.",
     habitat: "Rivières, marais, océans tièdes."
   },
   plant: {
     tagline: "La nature gagne toujours, lentement.",
     story: "Leafy pousse vers la lumière et fait pousser tout ce qu'il touche. Sa couronne fleurit à la dernière forme.",
-    weakness: "Subit plus de dégâts contre les créatures Feu.",
-    strength: "Très efficace face aux créatures Eau et Électrique.",
+    weakness: "Faible vs 🔥 Feu : la plante craint les flammes.",
+    strength: "Fort vs ⚡ Électrique : ses racines mettent l'électricité à la terre.",
     habitat: "Forêts, prairies, champs de roches verdoyantes."
   },
   electric: {
     tagline: "Étincelle d'abord, tonnerre ensuite.",
     story: "Zappi adore courir et déclenche des éclairs quand il rit. À la dernière forme, il porte une tempête entière.",
-    weakness: "Subit plus de dégâts contre les créatures Plante.",
-    strength: "Très efficace face aux créatures Eau.",
+    weakness: "Faible vs 🌿 Plante : la plante absorbe ses décharges.",
+    strength: "Fort vs 💧 Eau : un éclair traverse l'eau en éclair.",
     habitat: "Montagnes orageuses, plaines venteuses."
   }
 };

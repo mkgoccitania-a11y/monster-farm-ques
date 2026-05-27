@@ -105,12 +105,13 @@ const ENEMY_NAMES: Record<CreatureType, string[]> = {
   <new>: ["Nom Ennemi 1", "Nom Ennemi 2", "Nom Ennemi 3"]
 };
 
-const TYPE_ADVANTAGE: Record<CreatureType, CreatureType[]> = {
-  fire: ["plant"],
-  water: ["fire"],
-  plant: ["water", "electric"],
-  electric: ["water"],
-  <new>: ["<typeBattu>"]
+// Cycle équilibré 1:1 — chaque type a EXACTEMENT 1 advantage. Si tu ajoutes un type,
+// repense le cycle pour que chacun ait toujours 1 force + 1 faiblesse.
+const TYPE_ADVANTAGE: Record<CreatureType, CreatureType> = {
+  fire: "plant",
+  water: "fire",
+  electric: "water",
+  plant: "electric"
 };
 
 // pickEnemyType : décider à quelles zones le nouveau type apparaît

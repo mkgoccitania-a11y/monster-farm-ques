@@ -15,6 +15,7 @@ import RareMaterialPanel from "@/components/RareMaterialPanel";
 import ResourceTopBar from "@/components/ResourceTopBar";
 import RewardBurst from "@/components/RewardBurst";
 import TypeBadge from "@/components/TypeBadge";
+import TypeMatchupCard from "@/components/TypeMatchupCard";
 import { getSpeciesSprite, SPECIES_META } from "@/lib/creatureVisuals";
 import {
   applyBattleLossPenalty,
@@ -25,6 +26,7 @@ import {
   getBattlePlayerHp,
   getCurrentCreature,
   getEvolutionProgress,
+  getTypeMatchup,
   getWinStreakMultiplier,
   getZoneName,
   isAlreadyCaptured,
@@ -110,6 +112,8 @@ export default function BattlePage() {
   const [rareHelp, setRareHelp] = useState(false);
   const [captureGate, setCaptureGate] = useState<MultiplicationQuestion[] | null>(null);
   const [captureDone, setCaptureDone] = useState(false);
+  // Aperçu de l'ennemi (avant d'engager le duel) — sert à afficher la matchup de types
+  const [scoutedEnemy, setScoutedEnemy] = useState<Enemy | null>(null);
 
   useEffect(() => {
     if (!state || !creature || status !== "idle" || enemy) return;
@@ -117,6 +121,12 @@ export default function BattlePage() {
     setPlayerMaxHp(hp);
     setPlayerHp(hp);
   }, [state, creature, status, enemy]);
+
+  // Repérage automatique d'un ennemi quand on est en idle
+  useEffect(() => {
+    if (!state || !creature || status !== "idle" || enemy || scoutedEnemy) return;
+    setScoutedEnemy(createEnemy(state));
+  }, [state, creature, status, enemy, scoutedEnemy]);
 
   const evolutionInfo = useMemo(() => (state && creature ? getEvolutionProgress(state, creature) : null), [state, creature]);
   const bossAvailable = useMemo(() => (state ? isBossAvailable(state) : false), [state]);
@@ -138,10 +148,12 @@ export default function BattlePage() {
       return;
     }
     const charged = spendEnergyForAction(state, BATTLE_COST, 4);
-    const spawned = createEnemy(charged);
+    // On engage l'ennemi déjà repéré ; sinon on en spawne un nouveau (cas limite)
+    const spawned = scoutedEnemy ?? createEnemy(charged);
     commit(charged);
     const hp = getBattlePlayerHp(getCurrentCreature(charged));
     setEnemy(spawned);
+    setScoutedEnemy(null);
     setPlayerMaxHp(hp);
     setPlayerHp(hp);
     setStatus("fight");
@@ -152,6 +164,12 @@ export default function BattlePage() {
     setReaction("En garde !");
     setEnemyState("idle");
     setMessage(`Un ${spawned.name} sauvage apparaît en ${getZoneName(spawned.zone)} !`);
+  };
+
+  const rerollScout = () => {
+    if (status !== "idle") return;
+    setScoutedEnemy(createEnemy(state));
+    setMessage("Nouvel ennemi repéré.");
   };
 
   const chooseAction = (action: BattleAction) => {
@@ -362,6 +380,7 @@ export default function BattlePage() {
 
   const resetBattle = () => {
     setEnemy(null);
+    setScoutedEnemy(null); // force un nouveau repérage via le useEffect
     setStatus("idle");
     setPendingQuestions(null);
     setPendingAction(null);
@@ -530,11 +549,63 @@ export default function BattlePage() {
         </div>
       </section>
 
+      {/* Repérage : aperçu avant duel + matchup de types */}
+      {status === "idle" && scoutedEnemy && (
+        <section className="space-y-2">
+          <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-slate-900/60 to-indigo-950/60 p-3 backdrop-blur-md">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-200">🔭 Repérage</p>
+                <p className="text-base font-black text-white">{scoutedEnemy.name}</p>
+                <div className="mt-0.5 flex items-center gap-1 text-[11px]">
+                  <TypeBadge type={scoutedEnemy.type} size="xs" />
+                  <span className="chip">{getZoneName(scoutedEnemy.zone)}</span>
+                  <span className="chip">× {scoutedEnemy.table_focus}</span>
+                  <span className="chip">Diff {scoutedEnemy.difficulty}</span>
+                  {scoutedEnemy.rank === "boss" && <span className="chip text-fuchsia-200">👑 Boss</span>}
+                  {scoutedEnemy.rank === "elite" && <span className="chip text-amber-200">✦ Élite</span>}
+                </div>
+              </div>
+              <div className="relative h-20 w-20 overflow-hidden rounded-xl border border-white/15 bg-black/30">
+                <img
+                  src={getSpeciesSprite(scoutedEnemy.species, scoutedEnemy.stage)}
+                  alt={scoutedEnemy.name}
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                />
+              </div>
+            </div>
+          </div>
+
+          <TypeMatchupCard
+            playerType={creature.type}
+            enemyType={scoutedEnemy.type}
+            matchup={getTypeMatchup(creature.type, scoutedEnemy.type)}
+          />
+
+          <button
+            onClick={rerollScout}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-black text-white/85 backdrop-blur-md active:scale-95"
+          >
+            🔄 Chercher un autre ennemi
+          </button>
+        </section>
+      )}
+
       {/* Actions */}
       {status === "idle" && (
         <button onClick={startBattle} className="btn-primary w-full text-xl">
           ⚔️ Lancer un duel (−{BATTLE_COST} énergie)
         </button>
+      )}
+
+      {status === "fight" && enemy && (
+        <TypeMatchupCard
+          playerType={creature.type}
+          enemyType={enemy.type}
+          matchup={getTypeMatchup(creature.type, enemy.type)}
+          compact
+        />
       )}
 
       {status === "fight" && !pendingQuestions && (
@@ -673,7 +744,14 @@ export default function BattlePage() {
           <li><b>Potion :</b> mange une ration pour récupérer des PV (consomme 1 nourriture).</li>
         </ul>
         <p>Le <b>combo</b> augmente avec les bonnes réponses : plus il est haut, plus les dégâts montent.</p>
-        <p><b>Types :</b> regarde le badge de l'ennemi. Avantage de type = +25 % dégâts (cf. Codex).</p>
+        <p><b>Cycle de types</b> (chaque type bat 1 type et est faible vs 1 type) :</p>
+        <ul className="ml-4 list-disc space-y-0.5">
+          <li>🔥 Feu &gt; 🌿 Plante &nbsp;·&nbsp; ⚠️ Feu &lt; 💧 Eau</li>
+          <li>💧 Eau &gt; 🔥 Feu &nbsp;·&nbsp; ⚠️ Eau &lt; ⚡ Élec</li>
+          <li>⚡ Élec &gt; 💧 Eau &nbsp;·&nbsp; ⚠️ Élec &lt; 🌿 Plante</li>
+          <li>🌿 Plante &gt; ⚡ Élec &nbsp;·&nbsp; ⚠️ Plante &lt; 🔥 Feu</li>
+        </ul>
+        <p>Avantage = +25 % dégâts donnés et −18 % dégâts subis. Repère l'ennemi avant d'engager pour adapter ta tactique.</p>
         <p>💎 Les ennemis lâchent parfois un <b>matériau rare</b>, nécessaire pour faire évoluer.</p>
       </HelpPanel>
 

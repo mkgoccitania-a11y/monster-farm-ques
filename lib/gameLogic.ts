@@ -428,11 +428,65 @@ const CROP_CONFIG: Record<
   }
 };
 
-const TYPE_ADVANTAGE: Record<CreatureType, CreatureType[]> = {
-  fire: ["plant"],
-  water: ["fire"],
-  plant: ["water", "electric"],
-  electric: ["water"]
+// Cycle équilibré 1:1 : chaque type a exactement 1 force + 1 faiblesse + 2 neutres
+// 🔥 Feu bat 🌿 Plante (brûle), faible vs 💧 Eau
+// 💧 Eau bat 🔥 Feu (éteint), faible vs ⚡ Électrique
+// ⚡ Électrique bat 💧 Eau (électrocute), faible vs 🌿 Plante
+// 🌿 Plante bat ⚡ Électrique (s'enracine, met à la terre), faible vs 🔥 Feu
+export const TYPE_ADVANTAGE: Record<CreatureType, CreatureType> = {
+  fire: "plant",
+  water: "fire",
+  electric: "water",
+  plant: "electric"
+};
+
+// Calculé depuis TYPE_ADVANTAGE : chaque type est faible vs celui qui l'a comme advantage
+export const TYPE_WEAKNESS: Record<CreatureType, CreatureType> = (() => {
+  const w: Partial<Record<CreatureType, CreatureType>> = {};
+  (Object.keys(TYPE_ADVANTAGE) as CreatureType[]).forEach((attacker) => {
+    const target = TYPE_ADVANTAGE[attacker];
+    w[target] = attacker;
+  });
+  return w as Record<CreatureType, CreatureType>;
+})();
+
+export type TypeMatchupKind = "advantage" | "disadvantage" | "neutral";
+export interface TypeMatchup {
+  kind: TypeMatchupKind;
+  playerMul: number;   // multiplicateur quand le joueur attaque (1.25 / 0.82 / 1)
+  enemyMul: number;    // multiplicateur quand l'ennemi attaque (1.25 / 0.82 / 1)
+  label: string;       // texte court pour la UI
+  hint: string;        // une phrase pédagogique
+}
+
+export const getTypeMatchup = (playerType: CreatureType, enemyType: CreatureType): TypeMatchup => {
+  const playerHasAdv = TYPE_ADVANTAGE[playerType] === enemyType;
+  const enemyHasAdv = TYPE_ADVANTAGE[enemyType] === playerType;
+  if (playerHasAdv) {
+    return {
+      kind: "advantage",
+      playerMul: 1.25,
+      enemyMul: 0.82,
+      label: "Avantage",
+      hint: "Tes attaques font +25% de dégâts et tu encaisses moins. Fonce !"
+    };
+  }
+  if (enemyHasAdv) {
+    return {
+      kind: "disadvantage",
+      playerMul: 0.82,
+      enemyMul: 1.25,
+      label: "Désavantage",
+      hint: "L'ennemi te surclasse : pense à Garde / Esquive pour limiter la casse."
+    };
+  }
+  return {
+    kind: "neutral",
+    playerMul: 1,
+    enemyMul: 1,
+    label: "Match neutre",
+    hint: "Aucun bonus de type. Combat à la régulière."
+  };
 };
 
 const LEVEL_XP_STEP = 115;
@@ -1516,10 +1570,10 @@ export const applyTrainingStatGain = (state: PlayerState, focus: TrainingFocus, 
 };
 
 const getTypeMultiplier = (attacker: CreatureType, defender: CreatureType) => {
-  if (TYPE_ADVANTAGE[attacker]?.includes(defender)) {
+  if (TYPE_ADVANTAGE[attacker] === defender) {
     return 1.25;
   }
-  if (TYPE_ADVANTAGE[defender]?.includes(attacker)) {
+  if (TYPE_ADVANTAGE[defender] === attacker) {
     return 0.82;
   }
   return 1;
