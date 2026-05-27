@@ -278,23 +278,80 @@ export const getWinStreakMultiplier = (streak: number): number => {
 // ============================================================
 // CAPTURE D'ENNEMIS
 // ============================================================
-export const isAlreadyCaptured = (state: PlayerState, type: CreatureType): boolean => {
-  return Boolean(state.progress.captured?.[type]);
+export const isAlreadyCaptured = (state: PlayerState, species: CreatureSpecies): boolean => {
+  return Boolean(state.progress.captured?.[species]);
 };
 
-export const recordCapture = (state: PlayerState, type: CreatureType): { state: PlayerState; firstCapture: boolean } => {
+export const recordCapture = (
+  state: PlayerState,
+  enemy: Enemy
+): { state: PlayerState; firstCapture: boolean; addedToTeam: boolean; stageUpgraded: boolean; previousBestStage: 1 | 2 | 3 | 0 } => {
+  const species = enemy.species;
   const captured = { ...(state.progress.captured ?? {}) };
-  const existing = captured[type];
+  const existing = captured[species];
   const firstCapture = !existing;
-  captured[type] = {
-    type,
+  const previousBestStage: 1 | 2 | 3 | 0 = existing?.bestStage ?? 0;
+  // Le stage de l'ennemi vaincu remplace le précédent s'il est strictement supérieur
+  const stageUpgraded = !firstCapture && enemy.stage > previousBestStage;
+  const newBestStage: 1 | 2 | 3 = (Math.max(previousBestStage, enemy.stage) || enemy.stage) as 1 | 2 | 3;
+  const recordStats = stageUpgraded || firstCapture
+    ? {
+        attack: enemy.attack,
+        speed: enemy.speed,
+        defense: enemy.defense,
+        maxHp: enemy.maxHp,
+        difficulty: enemy.difficulty
+      }
+    : existing?.bestStats;
+
+  captured[species] = {
+    species,
     count: (existing?.count ?? 0) + 1,
-    firstCapturedAt: existing?.firstCapturedAt ?? Date.now()
+    firstCapturedAt: existing?.firstCapturedAt ?? Date.now(),
+    bestStage: newBestStage,
+    bestStats: recordStats,
+    bestCapturedAt: stageUpgraded || firstCapture ? Date.now() : existing?.bestCapturedAt
   };
+
+  // Si la species n'est pas encore dans l'équipe : on l'ajoute (stage 1, neuve, comme un Pokemon fraîchement capturé)
+  const alreadyInTeam = state.creatures.some((c) => (c.species ?? defaultSpeciesForType(c.type)) === species);
+  let creatures = state.creatures;
+  let addedToTeam = false;
+  if (!alreadyInTeam) {
+    const poolEntry = CREATURE_POOL.find((p) => p.species === species);
+    const idx = poolEntry ? CREATURE_POOL.findIndex((p) => p.species === species) : 0;
+    const newCreature: Creature = {
+      id: `creature-captured-${species}-${Date.now()}`,
+      name: poolEntry?.name ?? SPECIES_META[species].stageNames[0],
+      type: SPECIES_TYPE[species],
+      species,
+      multiplication_table: poolEntry?.table ?? SPECIES_META[species].table,
+      level: 1,
+      xp: 0,
+      happiness: 70,
+      hunger: 75,
+      evolution_stage: 1,
+      correctStreak: 0,
+      specialUnlocked: false,
+      stats: {
+        attack: 12 + Math.floor(idx * 1.5),
+        speed: 10 + Math.floor(idx * 1.5),
+        intelligence: 10 + Math.floor(idx * 1.5),
+        defense: 8 + Math.floor(idx / 1.5)
+      }
+    };
+    creatures = [...state.creatures, newCreature];
+    addedToTeam = true;
+  }
+
   return {
     firstCapture,
+    addedToTeam,
+    stageUpgraded,
+    previousBestStage,
     state: {
       ...state,
+      creatures,
       progress: {
         ...state.progress,
         captured,
@@ -581,6 +638,8 @@ export const createInitialState = (seed?: Partial<PlayerState>): PlayerState => 
     winStreak: Number.isFinite(seededProgress?.winStreak) ? seededProgress?.winStreak : 0,
     bestWinStreak: Number.isFinite(seededProgress?.bestWinStreak) ? seededProgress?.bestWinStreak : 0,
     captured: seededProgress?.captured ?? {},
+    seenSpecies: seededProgress?.seenSpecies ?? {},
+    seenBest: seededProgress?.seenBest ?? {},
     totalHarvests: Number.isFinite(seededProgress?.totalHarvests) ? seededProgress?.totalHarvests : 0,
     totalFeeds: Number.isFinite(seededProgress?.totalFeeds) ? seededProgress?.totalFeeds : 0,
     totalCaptured: Number.isFinite(seededProgress?.totalCaptured) ? seededProgress?.totalCaptured : 0,
@@ -1852,10 +1911,35 @@ export const applyBattleWinRewards = (state: PlayerState, defeatedEnemy?: Enemy)
   const enemyType = defeatedEnemy?.type;
   const zone = state.progress.unlockedZones;
 
-  // Bestiaire : on incrémente le compteur de rencontres pour ce type
+  // Bestiaire legacy (par type) — pour les achievements
   const seenEnemies = { ...(state.progress.seenEnemies ?? {}) };
   if (enemyType) {
     seenEnemies[enemyType] = (seenEnemies[enemyType] ?? 0) + 1;
+  }
+  // Bestiaire fin (par espèce) → alimente le Codex en mode "Vue"
+  const seenSpecies = { ...(state.progress.seenSpecies ?? {}) };
+  if (defeatedEnemy?.species) {
+    seenSpecies[defeatedEnemy.species] = (seenSpecies[defeatedEnemy.species] ?? 0) + 1;
+  }
+
+  // Record du plus fort spécimen vu (par species). Maj si nouvelle difficulté supérieure.
+  const seenBest = { ...(state.progress.seenBest ?? {}) };
+  if (defeatedEnemy?.species) {
+    const prev = seenBest[defeatedEnemy.species];
+    if (!prev || defeatedEnemy.difficulty > prev.difficulty) {
+      seenBest[defeatedEnemy.species] = {
+        difficulty: defeatedEnemy.difficulty,
+        stage: defeatedEnemy.stage,
+        maxHp: defeatedEnemy.maxHp,
+        attack: defeatedEnemy.attack,
+        speed: defeatedEnemy.speed,
+        defense: defeatedEnemy.defense,
+        temperament: defeatedEnemy.temperament,
+        rank: defeatedEnemy.rank,
+        zone: defeatedEnemy.zone,
+        lastSeenAt: Date.now()
+      };
+    }
   }
 
   // Compteur victoires par zone
@@ -1881,6 +1965,8 @@ export const applyBattleWinRewards = (state: PlayerState, defeatedEnemy?: Enemy)
         [seedDropType]: state.progress.seeds[seedDropType] + seedDrop
       },
       seenEnemies,
+      seenSpecies,
+      seenBest,
       zoneVictories,
       zoneBossesBeaten,
       winStreak: newStreak,

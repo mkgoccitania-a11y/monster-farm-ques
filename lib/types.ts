@@ -104,8 +104,12 @@ export interface PlayerProgress {
   objective: string;
   // Nouveau : compteur de victoires PAR zone pour gating de boss
   zoneVictories?: Record<number, number>;
-  // Bestiaire : créatures (par type) déjà rencontrées comme ennemi
+  // Bestiaire legacy (par type) — gardé pour les achievements existants
   seenEnemies?: Partial<Record<CreatureType, number>>;
+  // Bestiaire fin (par espèce) : incrémenté à chaque combat gagné → alimente le Codex en mode "Vue"
+  seenSpecies?: Partial<Record<CreatureSpecies, number>>;
+  // Mémoire du plus fort spécimen vu pour chaque species — mis à jour si nouvelle difficulté > existante
+  seenBest?: Partial<Record<CreatureSpecies, BestSighting>>;
   // Achievements débloqués (clé arbitraire)
   achievements?: string[];
   // Streak journalier : date ISO du dernier jour joué + nombre de jours consécutifs
@@ -118,8 +122,8 @@ export interface PlayerProgress {
   // Combo de victoires en combat (réinitialisé à 0 à la défaite)
   winStreak?: number;
   bestWinStreak?: number;
-  // Capture
-  captured?: Partial<Record<CreatureType, CapturedEntry>>;
+  // Capture (par espèce désormais — avant c'était par type, donc 2 species partageant un type s'écrasaient)
+  captured?: Partial<Record<CreatureSpecies, CapturedEntry>>;
   // Statistiques cumulées pour les quêtes
   totalHarvests?: number;
   totalFeeds?: number;
@@ -181,9 +185,35 @@ export interface DailyQuestsState {
 // Capture d'ennemis (Pokedex étendu)
 // ============================================================
 export interface CapturedEntry {
-  type: CreatureType;
-  count: number;          // nb de fois capturé (le 1er = découverte)
+  species: CreatureSpecies;
+  count: number;             // nb total de captures
   firstCapturedAt: number;
+  // Stage le plus haut capturé (1, 2 ou 3). Une capture à un stage supérieur écrase l'entrée.
+  bestStage: 1 | 2 | 3;
+  // Stats du meilleur spécimen capturé (recopiées au moment où le record est battu)
+  bestStats?: {
+    attack: number;
+    speed: number;
+    defense: number;
+    maxHp: number;
+    difficulty: number;
+  };
+  bestCapturedAt?: number;
+}
+
+// Mémoire du plus fort spécimen rencontré pour une species donnée.
+// Sert au Codex pour afficher "Tu as battu un spécimen de difficulté N, ATK X..."
+export interface BestSighting {
+  difficulty: number;
+  stage: 1 | 2 | 3;
+  maxHp: number;
+  attack: number;
+  speed: number;
+  defense: number;
+  temperament: EnemyTemperament;
+  rank: EnemyRank;
+  zone: number;
+  lastSeenAt: number;
 }
 
 export interface BattleTurnResult {

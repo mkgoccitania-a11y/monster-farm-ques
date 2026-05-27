@@ -339,14 +339,24 @@ export default function BattlePage() {
       setCaptureDone(true);
       return;
     }
-    // Réussite : enregistre la capture
-    const wasNew = !isAlreadyCaptured(next, enemy.type);
-    const rec = recordCapture(next, enemy.type);
+    // Réussite : enregistre la capture (passe l'ennemi complet pour stocker stage + stats)
+    const rec = recordCapture(next, enemy);
     let after = rec.state;
     after = progressQuests(after, { kind: "capture" });
     commit(after);
-    popBurst(wasNew ? "Nouvelle créature !" : "Capturé !", "gold");
-    setMessage(wasNew ? `🎉 ${enemy.name} ajouté au Codex !` : `${enemy.name} capturé (+1 essence).`);
+    if (rec.firstCapture && rec.addedToTeam) {
+      popBurst("Nouveau partenaire !", "gold");
+      setMessage(`🎉 ${SPECIES_META[enemy.species].stageNames[0]} rejoint ton équipe ! Va dans la Ferme → Équipe pour le définir comme actif.`);
+    } else if (rec.stageUpgraded) {
+      popBurst(`Stage ${rec.previousBestStage} → ${enemy.stage}`, "gold");
+      setMessage(`✨ Spécimen plus fort capturé ! Codex mis à jour : stage ${rec.previousBestStage} → stage ${enemy.stage}.`);
+    } else if (rec.firstCapture) {
+      popBurst("Nouvelle créature !", "gold");
+      setMessage(`🎉 ${enemy.name} ajouté au Codex !`);
+    } else {
+      popBurst("Capturé !", "gold");
+      setMessage(`${enemy.name} capturé (+1 essence).`);
+    }
     setCaptureDone(true);
   };
 
@@ -601,7 +611,7 @@ export default function BattlePage() {
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-amber-300/50 bg-gradient-to-br from-amber-400/40 to-orange-600/40 px-3 py-2 text-sm font-black text-amber-100 backdrop-blur-md active:scale-95"
             >
               <GameIcon name="capture" size={16} />
-              <span>Tenter la capture · 3 multiplications {isAlreadyCaptured(state, enemy.type) ? "" : "· NOUVEAU !"}</span>
+              <span>Tenter la capture · 3 multiplications {isAlreadyCaptured(state, enemy.species) ? "" : "· NOUVEAU !"}</span>
             </button>
           )}
           {status === "won" && enemy?.rank === "boss" && (

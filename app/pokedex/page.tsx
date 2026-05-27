@@ -44,22 +44,38 @@ const lore: Record<CreatureType, { tagline: string; story: string; weakness: str
 };
 
 export default function PokedexPage() {
-  const { state, hydrated } = useGameState();
+  const { state, hydrated, setCurrentCreature } = useGameState();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [help, setHelp] = useState(false);
 
   const entries = useMemo(() => {
     if (!state) return [];
     return CREATURE_POOL.map((c, idx) => {
-      // Recherche par species (plus précis qu'un match par type maintenant)
       const owned = state.creatures.find((cr) => (cr.species ?? cr.type) === c.species);
       const isUnlocked = idx < state.progress.unlockedCreatures;
+      const seenCount = state.progress.seenSpecies?.[c.species] ?? 0;
+      const captured = state.progress.captured?.[c.species];
+      const isCaptured = Boolean(captured);
+      const isSeen = seenCount > 0;
+      // Découverte si :
+      // - le joueur la possède (dressée)
+      // - OU elle est unlocked dans le pool joueur
+      // - OU elle a été capturée
+      // - OU elle a été simplement vue (combattue + vaincue)
+      const isDiscovered = isUnlocked || Boolean(owned) || isCaptured || isSeen;
+      // Détail "premium" (lore complet, stats) accessible si dressée OU capturée OU unlocked
+      const hasFullDetail = isUnlocked || Boolean(owned) || isCaptured;
       return {
         idx,
         pool: c,
         owned,
         isUnlocked,
-        isDiscovered: isUnlocked || Boolean(owned)
+        seenCount,
+        captured,
+        isCaptured,
+        isSeen,
+        isDiscovered,
+        hasFullDetail
       };
     });
   }, [state]);
@@ -87,7 +103,11 @@ export default function PokedexPage() {
 
       <section className="grid grid-cols-2 gap-3">
         {entries.map((entry) => {
-          const stage = (entry.owned?.evolution_stage ?? 1) as 1 | 2 | 3;
+          // Choix du stage à afficher :
+          // - owned (dressée) → stage d'évolution actuel
+          // - capturée → meilleur stage capturé
+          // - sinon → stage 1
+          const displayStage: 1 | 2 | 3 = (entry.owned?.evolution_stage ?? entry.captured?.bestStage ?? 1) as 1 | 2 | 3;
           const typeGradient: Record<string, string> = {
             fire: "from-orange-500/25 via-rose-500/15 to-slate-900/40",
             water: "from-sky-500/25 via-cyan-500/15 to-slate-900/40",
@@ -114,11 +134,31 @@ export default function PokedexPage() {
                 {entry.isDiscovered ? (
                   <div className="h-full w-full overflow-hidden">
                     <img
-                      src={getSpeciesSprite(entry.pool.species, entry.owned?.evolution_stage ?? 1)}
+                      src={getSpeciesSprite(entry.pool.species, displayStage)}
                       alt={entry.pool.name}
                       className="h-full w-full object-cover"
                       draggable={false}
+                      style={{
+                        // Si juste "vue" (pas capturée et pas dressée) : effet désaturé pour montrer qu'on en a moins d'infos
+                        filter: !entry.hasFullDetail ? "grayscale(0.55) brightness(0.85)" : "none"
+                      }}
                     />
+                    {/* Badge statut en bas à droite de la vignette */}
+                    <div className="absolute bottom-1 right-1">
+                      {entry.isCaptured ? (
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-1.5 py-0.5 text-[9px] font-black text-amber-950 shadow-bubble">
+                          ✓ F{entry.captured?.bestStage ?? 1}
+                        </span>
+                      ) : entry.isSeen ? (
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-1.5 py-0.5 text-[9px] font-black text-sky-50 shadow-bubble">
+                          👁 Vue {entry.seenCount > 1 ? `×${entry.seenCount}` : ""}
+                        </span>
+                      ) : entry.owned ? (
+                        <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-1.5 py-0.5 text-[9px] font-black text-violet-50 shadow-bubble">
+                          ★ Dressée
+                        </span>
+                      ) : null}
+                    </div>
                   </div>
                 ) : (
                   // Placeholder élégant : "?" lumineux + halo discret
@@ -189,7 +229,7 @@ export default function PokedexPage() {
                 <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-b from-black/30 to-black/50">
                   {selected.isDiscovered ? (
                     <img
-                      src={getSpeciesSprite(selected.pool.species, selected.owned?.evolution_stage ?? 1)}
+                      src={getSpeciesSprite(selected.pool.species, (selected.owned?.evolution_stage ?? selected.captured?.bestStage ?? 1) as 1 | 2 | 3)}
                       alt={selected.pool.name}
                       className="h-full w-full object-cover"
                       draggable={false}
@@ -205,12 +245,66 @@ export default function PokedexPage() {
                 <div className="flex-1">
                   <p className="text-2xl font-black shimmer-text">{selected.isDiscovered ? (selected.owned?.name ?? selected.pool.name) : "???"}</p>
                   <p className="text-xs font-black text-white/70">Espèce {family?.display}</p>
-                  <div className="mt-1 flex gap-1"><TypeBadge type={selected.pool.type} /></div>
+                  <div className="mt-1 flex flex-wrap items-center gap-1">
+                    <TypeBadge type={selected.pool.type} />
+                    {selected.isCaptured && (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/85 px-2 py-0.5 text-[10px] font-black text-amber-950">
+                        ✓ Capturée ×{selected.captured?.count ?? 1} · Forme {selected.captured?.bestStage ?? 1}
+                      </span>
+                    )}
+                    {!selected.isCaptured && selected.isSeen && (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/85 px-2 py-0.5 text-[10px] font-black text-sky-50">
+                        👁 Vue ×{selected.seenCount}
+                      </span>
+                    )}
+                    {selected.owned && (
+                      <span className="inline-flex items-center gap-0.5 rounded-full bg-violet-500/85 px-2 py-0.5 text-[10px] font-black text-violet-50">
+                        ★ Dressée
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-2 text-[11px] italic text-white/70">"{lored?.tagline}"</p>
                 </div>
               </div>
 
-              {selected.isDiscovered ? (
+              {/* Si juste vue (pas capturée, pas dressée) : info partielle + incitation à capturer */}
+              {selected.isSeen && !selected.hasFullDetail && (
+                <div className="mt-3 rounded-2xl border border-amber-300/40 bg-amber-400/15 p-3 text-xs text-amber-100">
+                  <p className="font-black">📖 Données partielles</p>
+                  <p className="mt-1 text-amber-50/90">Tu as déjà combattu cette créature {selected.seenCount} fois. <b>Capture-la</b> en fin de combat (3 multiplications de suite) pour débloquer son histoire complète, ses forces et faiblesses détaillées, et sa lignée d'évolution.</p>
+                </div>
+              )}
+
+              {/* Stats du plus fort spécimen rencontré */}
+              {state.progress.seenBest?.[selected.pool.species] && (
+                <div className="mt-2 rounded-2xl border border-sky-300/30 bg-sky-500/15 p-3 text-xs">
+                  <p className="font-black uppercase tracking-wide text-sky-200">
+                    🏆 Spécimen le plus fort rencontré
+                  </p>
+                  {(() => {
+                    const b = state.progress.seenBest![selected.pool.species]!;
+                    return (
+                      <>
+                        <p className="mt-1 text-sky-50/90">
+                          Forme <b>{b.stage}</b> · Difficulté <b>{b.difficulty}</b> · Zone <b>{b.zone}</b>
+                          {b.rank === "boss" && " · 👑 Boss"}
+                          {b.rank === "elite" && " · ✦ Élite"}
+                          {b.rank !== "common" || b.temperament !== "balanced" ? ` · Tempérament : ${b.temperament}` : ""}
+                        </p>
+                        <div className="mt-2 grid grid-cols-4 gap-1 text-center text-[10px] font-black">
+                          <div className="rounded-lg bg-rose-500/20 px-1 py-0.5 text-rose-100">💪 {b.attack}</div>
+                          <div className="rounded-lg bg-cyan-500/20 px-1 py-0.5 text-cyan-100">⚡ {b.speed}</div>
+                          <div className="rounded-lg bg-emerald-500/20 px-1 py-0.5 text-emerald-100">🛡 {b.defense}</div>
+                          <div className="rounded-lg bg-pink-500/20 px-1 py-0.5 text-pink-100">❤️ {b.maxHp}</div>
+                        </div>
+                        <p className="mt-1 text-[10px] text-sky-100/70">Stats remplacées automatiquement si tu rencontres un spécimen plus difficile.</p>
+                      </>
+                    );
+                  })()}
+                </div>
+              )}
+
+              {selected.hasFullDetail ? (
                 <>
                   <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs">
                     <p className="font-black uppercase tracking-wide text-cyan-200">Histoire</p>
@@ -269,18 +363,36 @@ export default function PokedexPage() {
                   </div>
 
                   {selected.owned && (
-                    <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[11px] font-black">
-                      <div className="rounded-lg bg-rose-500/20 px-2 py-1 text-rose-100">💪 {selected.owned.stats.attack}</div>
-                      <div className="rounded-lg bg-cyan-500/20 px-2 py-1 text-cyan-100">⚡ {selected.owned.stats.speed}</div>
-                      <div className="rounded-lg bg-violet-500/20 px-2 py-1 text-violet-100">🧠 {selected.owned.stats.intelligence}</div>
-                      <div className="rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-100">🛡 {selected.owned.stats.defense}</div>
-                    </div>
+                    <>
+                      <div className="mt-3 grid grid-cols-4 gap-2 text-center text-[11px] font-black">
+                        <div className="rounded-lg bg-rose-500/20 px-2 py-1 text-rose-100">💪 {selected.owned.stats.attack}</div>
+                        <div className="rounded-lg bg-cyan-500/20 px-2 py-1 text-cyan-100">⚡ {selected.owned.stats.speed}</div>
+                        <div className="rounded-lg bg-violet-500/20 px-2 py-1 text-violet-100">🧠 {selected.owned.stats.intelligence}</div>
+                        <div className="rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-100">🛡 {selected.owned.stats.defense}</div>
+                      </div>
+                      {/* Définir comme actif */}
+                      {state.progress.currentCreatureId !== selected.owned.id ? (
+                        <button
+                          onClick={() => {
+                            setCurrentCreature(selected.owned!.id);
+                            setSelectedIdx(null);
+                          }}
+                          className="btn-primary mt-3 flex w-full items-center justify-center gap-2"
+                        >
+                          <span>★ Définir comme partenaire actif</span>
+                        </button>
+                      ) : (
+                        <div className="mt-3 rounded-xl border border-violet-300/40 bg-violet-500/20 px-3 py-2 text-center text-xs font-black text-violet-100">
+                          ★ Partenaire actuel
+                        </div>
+                      )}
+                    </>
                   )}
                 </>
-              ) : (
+              ) : selected.isSeen ? null : (
                 <div className="mt-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-center text-sm text-white/70">
                   <p>Cette créature reste à découvrir.</p>
-                  <p className="mt-1 text-[11px]">Continue à monter de niveau pour la rencontrer.</p>
+                  <p className="mt-1 text-[11px]">Continue à monter de niveau pour la rencontrer en combat.</p>
                 </div>
               )}
             </motion.div>
@@ -289,9 +401,13 @@ export default function PokedexPage() {
       </AnimatePresence>
 
       <HelpPanel open={help} title="📖 À propos du Codex" onClose={() => setHelp(false)}>
-        <p>Le <b>Codex</b> liste toutes les créatures que tu peux dresser. Chacune est liée à une table de multiplication.</p>
-        <p>🔒 Une créature à découvrir reste en silhouette. Monte en niveau pour la débloquer (une nouvelle créature tous les 5 niveaux joueur).</p>
-        <p>👉 Touche une carte pour voir l'histoire, les forces, faiblesses et les 3 formes d'évolution.</p>
+        <p>Le <b>Codex</b> répertorie les 10 espèces de créatures du jeu. Chacune a 3 niveaux d'information selon ce que tu as fait :</p>
+        <ul className="ml-4 list-disc space-y-1">
+          <li>🔒 <b>Inconnue</b> : silhouette "?". Tu ne l'as ni dressée, ni rencontrée en combat. Continue à monter de niveau.</li>
+          <li>👁 <b>Vue</b> : tu l'as battue en combat. Image en niveau de gris, données partielles seulement.</li>
+          <li>✓ <b>Capturée</b> : tu as réussi sa capture (3 multiplications après victoire). Image en couleur, histoire complète, forces / faiblesses, habitat révélés.</li>
+          <li>★ <b>Dressée</b> : c'est l'une de tes créatures actives. Détails complets + stats actuelles affichées.</li>
+        </ul>
         <p>💡 Les avantages de type sont importants en combat : Feu &gt; Plante, Eau &gt; Feu, Plante &gt; Eau/Élec, Élec &gt; Eau.</p>
       </HelpPanel>
     </main>
