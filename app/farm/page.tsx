@@ -118,18 +118,31 @@ export default function FarmPage() {
       let statut: FarmPlotUiModel["statut"] = "verrouillee";
       let planteActuelle: CropType | null = null;
       let tempsRestantLabel: string | undefined;
+      let growthRatio: number | undefined;
 
       if (achetee && found) {
         if (!found.cropType) statut = "disponible";
         else {
           planteActuelle = found.cropType;
           const ready = Boolean(found.readyAt && found.readyAt <= now);
-          if (ready) statut = "prete";
-          else { statut = "croissance"; const remaining = found.readyAt ? found.readyAt - now : 0; tempsRestantLabel = formatRemaining(remaining); }
+          if (ready) {
+            statut = "prete";
+            growthRatio = 1;
+          } else {
+            statut = "croissance";
+            const remaining = found.readyAt ? found.readyAt - now : 0;
+            tempsRestantLabel = formatRemaining(remaining);
+            // Ratio de croissance : 0 = juste planté, 1 = prêt
+            if (found.plantedAt && found.readyAt && found.readyAt > found.plantedAt) {
+              const total = found.readyAt - found.plantedAt;
+              const elapsed = now - found.plantedAt;
+              growthRatio = Math.min(1, Math.max(0, elapsed / total));
+            }
+          }
         }
       }
 
-      list.push({ id, nom: `Case ${i + 1}`, statut, prix, achetee, planteActuelle, tempsRestantLabel });
+      list.push({ id, nom: `Case ${i + 1}`, statut, prix, achetee, planteActuelle, tempsRestantLabel, growthRatio });
     }
     return list;
   }, [state?.progress.plots, now]);
