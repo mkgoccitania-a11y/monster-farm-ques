@@ -20,6 +20,8 @@ Thumbs.db
 
 # Claude Code (settings personnels, ne pas partager)
 .claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/scheduled_tasks/
 
 # IDE
 .vscode/
