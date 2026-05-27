@@ -1,301 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Champ de jeu finished">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Champ mûr">
+  <defs>
+    <linearGradient id="soil03" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a16830"/>
+      <stop offset="0.55" stop-color="#7e4b22"/>
+      <stop offset="1" stop-color="#5b3314"/>
+    </linearGradient>
+    <symbol id="wheat03" viewBox="0 0 14 22">
+      <!-- Tige -->
+      <path d="M7 21 V8" stroke="#7d6210" stroke-width="1.2" stroke-linecap="round"/>
+      <!-- Feuilles -->
+      <path d="M7 14 C3 13 1.5 14.5 1 17 C4 17.5 6 16 7 14 Z" fill="#8b9b1f"/>
+      <path d="M7 12 C11 11 12.5 12.5 13 15 C10 15.5 8 14 7 12 Z" fill="#a4b525"/>
+      <!-- Épi : grains dorés -->
+      <g fill="#ffce2a" stroke="#9d6a05" stroke-width="0.3">
+        <ellipse cx="7" cy="3.5" rx="1.7" ry="3.2"/>
+        <ellipse cx="4.6" cy="5.6" rx="1.3" ry="2.5" transform="rotate(-35 4.6 5.6)"/>
+        <ellipse cx="9.4" cy="5.6" rx="1.3" ry="2.5" transform="rotate(35 9.4 5.6)"/>
+        <ellipse cx="4.2" cy="8.4" rx="1.3" ry="2.5" transform="rotate(-38 4.2 8.4)"/>
+        <ellipse cx="9.8" cy="8.4" rx="1.3" ry="2.5" transform="rotate(38 9.8 8.4)"/>
+      </g>
+      <!-- Reflet sur l'épi -->
+      <path d="M7 1 V7" stroke="#fff4a6" stroke-width="0.4" opacity="0.7"/>
+    </symbol>
+  </defs>
 
-<defs>
-  <linearGradient id="soilG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a541f"/><stop offset="1" stop-color="#5b3314"/></linearGradient>
-  <linearGradient id="grassG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c819"/><stop offset="1" stop-color="#5faa16"/></linearGradient>
-  <radialGradient id="treeG" cx="42%" cy="32%" r="66%"><stop offset="0" stop-color="#b8e827"/><stop offset=".58" stop-color="#5fb51c"/><stop offset="1" stop-color="#2f7611"/></radialGradient>
-  <symbol id="leafblob" viewBox="0 0 48 32"><ellipse cx="24" cy="16" rx="23" ry="15" fill="#63b81c"/><circle cx="14" cy="12" r="9" fill="#95d51f" opacity=".75"/><circle cx="29" cy="11" r="8" fill="#95d51f" opacity=".55"/><circle cx="36" cy="19" r="7" fill="#2f7f13" opacity=".45"/></symbol>
-  <symbol id="tree" viewBox="0 0 100 100"><path d="M39 76h22l-4 19H43z" fill="#7a481c"/><circle cx="50" cy="46" r="38" fill="url(#treeG)" stroke="#2c6f0d" stroke-width="4"/><circle cx="34" cy="36" r="20" fill="#7bc719" opacity=".85"/><circle cx="57" cy="29" r="24" fill="#9ed421" opacity=".75"/><circle cx="68" cy="54" r="19" fill="#4d9d17" opacity=".75"/><circle cx="43" cy="58" r="24" fill="#5dac18" opacity=".65"/></symbol>
-  <symbol id="flower" viewBox="0 0 22 22"><circle cx="11" cy="11" r="3" fill="#f6a700"/><circle cx="11" cy="4" r="4" fill="#ffd641"/><circle cx="18" cy="11" r="4" fill="#ffd641"/><circle cx="11" cy="18" r="4" fill="#fff7d1"/><circle cx="4" cy="11" r="4" fill="#fff7d1"/></symbol>
-  <symbol id="sprout" viewBox="0 0 42 42"><path d="M21 34V20" stroke="#3e9618" stroke-width="5" stroke-linecap="round"/><path d="M20 20C10 10 5 11 4 22c8 3 14 1 16-2z" fill="#8fe23a" stroke="#3e9618" stroke-width="2"/><path d="M22 20c10-10 15-9 16 2-8 3-14 1-16-2z" fill="#9df044" stroke="#3e9618" stroke-width="2"/></symbol>
-  <symbol id="wheat" viewBox="0 0 56 90"><path d="M28 86V22" stroke="#7d7a12" stroke-width="5" stroke-linecap="round"/><path d="M28 70c-11 2-19 8-22 16 13 0 21-5 22-16z" fill="#8e9c1a"/><path d="M28 65c11 2 19 8 22 16-13 0-21-5-22-16z" fill="#9aaa1f"/><g fill="#ffd33a" stroke="#9d6a05" stroke-width="1.6"><ellipse cx="28" cy="14" rx="8" ry="15"/><ellipse cx="18" cy="26" rx="7" ry="13" transform="rotate(-35 18 26)"/><ellipse cx="38" cy="26" rx="7" ry="13" transform="rotate(35 38 26)"/><ellipse cx="17" cy="41" rx="7" ry="13" transform="rotate(-38 17 41)"/><ellipse cx="39" cy="41" rx="7" ry="13" transform="rotate(38 39 41)"/><ellipse cx="19" cy="56" rx="7" ry="12" transform="rotate(-38 19 56)"/><ellipse cx="37" cy="56" rx="7" ry="12" transform="rotate(38 37 56)"/></g><path d="M28 8v60" stroke="#f3a813" stroke-width="2" opacity=".55"/></symbol>
-</defs><rect width="1024" height="1024" fill="none"/><rect x="34" y="34" width="956" height="956" rx="64" fill="url(#grassG)" stroke="#5f8f18" stroke-width="8"/>
-  <rect x="80" y="64" width="864" height="94" rx="40" fill="#55a916" stroke="#2f7d0f" stroke-width="5"/>
-  <rect x="80" y="866" width="864" height="94" rx="40" fill="#55a916" stroke="#2f7d0f" stroke-width="5"/>
-  <rect x="64" y="80" width="94" height="864" rx="40" fill="#55a916" stroke="#2f7d0f" stroke-width="5"/>
-  <rect x="866" y="80" width="94" height="864" rx="40" fill="#55a916" stroke="#2f7d0f" stroke-width="5"/>
-  <use href="#leafblob" x="95" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="95" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="155" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="155" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="215" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="215" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="275" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="275" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="335" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="335" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="395" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="395" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="455" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="455" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="515" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="515" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="575" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="575" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="635" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="635" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="695" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="695" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="755" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="755" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="815" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="815" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="875" y="82" width="58" height="38"/>
-  <use href="#leafblob" x="875" y="902" width="58" height="38"/>
-  <use href="#leafblob" x="83" y="105" width="38" height="58" transform="rotate(90 102 134)"/>
-  <use href="#leafblob" x="904" y="105" width="38" height="58" transform="rotate(90 923 134)"/>
-  <use href="#leafblob" x="83" y="163" width="38" height="58" transform="rotate(90 102 192)"/>
-  <use href="#leafblob" x="904" y="163" width="38" height="58" transform="rotate(90 923 192)"/>
-  <use href="#leafblob" x="83" y="221" width="38" height="58" transform="rotate(90 102 250)"/>
-  <use href="#leafblob" x="904" y="221" width="38" height="58" transform="rotate(90 923 250)"/>
-  <use href="#leafblob" x="83" y="279" width="38" height="58" transform="rotate(90 102 308)"/>
-  <use href="#leafblob" x="904" y="279" width="38" height="58" transform="rotate(90 923 308)"/>
-  <use href="#leafblob" x="83" y="337" width="38" height="58" transform="rotate(90 102 366)"/>
-  <use href="#leafblob" x="904" y="337" width="38" height="58" transform="rotate(90 923 366)"/>
-  <use href="#leafblob" x="83" y="395" width="38" height="58" transform="rotate(90 102 424)"/>
-  <use href="#leafblob" x="904" y="395" width="38" height="58" transform="rotate(90 923 424)"/>
-  <use href="#leafblob" x="83" y="453" width="38" height="58" transform="rotate(90 102 482)"/>
-  <use href="#leafblob" x="904" y="453" width="38" height="58" transform="rotate(90 923 482)"/>
-  <use href="#leafblob" x="83" y="511" width="38" height="58" transform="rotate(90 102 540)"/>
-  <use href="#leafblob" x="904" y="511" width="38" height="58" transform="rotate(90 923 540)"/>
-  <use href="#leafblob" x="83" y="569" width="38" height="58" transform="rotate(90 102 598)"/>
-  <use href="#leafblob" x="904" y="569" width="38" height="58" transform="rotate(90 923 598)"/>
-  <use href="#leafblob" x="83" y="627" width="38" height="58" transform="rotate(90 102 656)"/>
-  <use href="#leafblob" x="904" y="627" width="38" height="58" transform="rotate(90 923 656)"/>
-  <use href="#leafblob" x="83" y="685" width="38" height="58" transform="rotate(90 102 714)"/>
-  <use href="#leafblob" x="904" y="685" width="38" height="58" transform="rotate(90 923 714)"/>
-  <use href="#leafblob" x="83" y="743" width="38" height="58" transform="rotate(90 102 772)"/>
-  <use href="#leafblob" x="904" y="743" width="38" height="58" transform="rotate(90 923 772)"/>
-  <use href="#leafblob" x="83" y="801" width="38" height="58" transform="rotate(90 102 830)"/>
-  <use href="#leafblob" x="904" y="801" width="38" height="58" transform="rotate(90 923 830)"/>
-  <use href="#leafblob" x="83" y="859" width="38" height="58" transform="rotate(90 102 888)"/>
-  <use href="#leafblob" x="904" y="859" width="38" height="58" transform="rotate(90 923 888)"/>
-  <use href="#tree" x="22" y="22" width="118" height="118"/>
-  <use href="#tree" x="884" y="22" width="118" height="118"/>
-  <use href="#tree" x="22" y="884" width="118" height="118"/>
-  <use href="#tree" x="884" y="884" width="118" height="118"/>
-  <use href="#tree" x="454" y="18" width="95" height="95"/>
-  <use href="#tree" x="454" y="909" width="95" height="95"/>
-  <use href="#tree" x="18" y="454" width="95" height="95"/>
-  <use href="#tree" x="909" y="454" width="95" height="95"/>
-  <use href="#flower" x="278" y="88" width="20" height="20"/>
-  <use href="#flower" x="735" y="88" width="20" height="20"/>
-  <use href="#flower" x="210" y="902" width="20" height="20"/>
-  <use href="#flower" x="715" y="902" width="20" height="20"/>
-  <use href="#flower" x="92" y="286" width="20" height="20"/>
-  <use href="#flower" x="92" y="728" width="20" height="20"/>
-  <use href="#flower" x="910" y="286" width="20" height="20"/>
-  <use href="#flower" x="910" y="728" width="20" height="20"/>
-  <use href="#flower" x="488" y="904" width="18" height="18"/>
-  <use href="#flower" x="900" y="116" width="17" height="17"/>
-  <rect x="142" y="138" width="740" height="748" rx="28" fill="#b77a2a" stroke="#845818" stroke-width="8"/>
-  <rect x="162" y="158" width="700" height="708" rx="22" fill="url(#soilG)" stroke="#4e2b11" stroke-width="6"/><path d="M192 182 C174 300 174 720 192 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M207 184 C194 310 194 718 207 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M246 182 C228 300 228 720 246 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M261 184 C248 310 248 718 261 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M300 182 C282 300 282 720 300 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M315 184 C302 310 302 718 315 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M354 182 C336 300 336 720 354 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M369 184 C356 310 356 718 369 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M408 182 C390 300 390 720 408 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M423 184 C410 310 410 718 423 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M462 182 C444 300 444 720 462 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M477 184 C464 310 464 718 477 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M516 182 C498 300 498 720 516 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M531 184 C518 310 518 718 531 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M570 182 C552 300 552 720 570 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M585 184 C572 310 572 718 585 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M624 182 C606 300 606 720 624 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M639 184 C626 310 626 718 639 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M678 182 C660 300 660 720 678 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M693 184 C680 310 680 718 693 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M732 182 C714 300 714 720 732 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M747 184 C734 310 734 718 747 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M786 182 C768 300 768 720 786 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M801 184 C788 310 788 718 801 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <path d="M840 182 C822 300 822 720 840 842" fill="none" stroke="#4f2d13" stroke-width="26" stroke-linecap="round" opacity=".38"/>
-  <path d="M855 184 C842 310 842 718 855 840" fill="none" stroke="#a66a2a" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-  <circle cx="185" cy="180" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="268" cy="317" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="351" cy="454" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="434" cy="591" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="517" cy="728" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="600" cy="215" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="683" cy="352" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="766" cy="489" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="199" cy="626" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="282" cy="763" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="365" cy="250" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="448" cy="387" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="531" cy="524" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="614" cy="661" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="697" cy="798" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="780" cy="285" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="213" cy="422" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="296" cy="559" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="379" cy="696" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="462" cy="183" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="545" cy="320" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="628" cy="457" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="711" cy="594" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="794" cy="731" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="227" cy="218" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="310" cy="355" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="393" cy="492" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="476" cy="629" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="559" cy="766" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="642" cy="253" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="725" cy="390" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="808" cy="527" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="241" cy="664" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="324" cy="801" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="407" cy="288" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="490" cy="425" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="573" cy="562" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="656" cy="699" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="739" cy="186" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="822" cy="323" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="255" cy="460" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="338" cy="597" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="421" cy="734" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="504" cy="221" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="587" cy="358" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="670" cy="495" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="753" cy="632" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="186" cy="769" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="269" cy="256" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="352" cy="393" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="435" cy="530" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="518" cy="667" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="601" cy="804" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="684" cy="291" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="767" cy="428" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="200" cy="565" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="283" cy="702" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="366" cy="189" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="449" cy="326" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="532" cy="463" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="615" cy="600" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="698" cy="737" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="781" cy="224" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="214" cy="361" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="297" cy="498" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="380" cy="635" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="463" cy="772" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="546" cy="259" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="629" cy="396" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="712" cy="533" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="795" cy="670" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="228" cy="807" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="311" cy="294" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="394" cy="431" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="477" cy="568" r="7" fill="#9a5c20" opacity=".28"/>
-  <circle cx="560" cy="705" r="3" fill="#9a5c20" opacity=".28"/>
-  <circle cx="643" cy="192" r="4" fill="#9a5c20" opacity=".28"/>
-  <circle cx="726" cy="329" r="5" fill="#9a5c20" opacity=".28"/>
-  <circle cx="809" cy="466" r="6" fill="#9a5c20" opacity=".28"/>
-  <circle cx="242" cy="603" r="7" fill="#9a5c20" opacity=".28"/><use href="#wheat" x="178" y="178" width="58" height="90"/>
-  <use href="#wheat" x="236" y="178" width="58" height="90"/>
-  <use href="#wheat" x="294" y="178" width="58" height="90"/>
-  <use href="#wheat" x="352" y="178" width="58" height="90"/>
-  <use href="#wheat" x="410" y="178" width="58" height="90"/>
-  <use href="#wheat" x="468" y="178" width="58" height="90"/>
-  <use href="#wheat" x="526" y="178" width="58" height="90"/>
-  <use href="#wheat" x="584" y="178" width="58" height="90"/>
-  <use href="#wheat" x="642" y="178" width="58" height="90"/>
-  <use href="#wheat" x="700" y="178" width="58" height="90"/>
-  <use href="#wheat" x="758" y="178" width="58" height="90"/>
-  <use href="#wheat" x="816" y="178" width="58" height="90"/>
-  <use href="#wheat" x="206" y="256" width="54" height="90"/>
-  <use href="#wheat" x="264" y="256" width="54" height="90"/>
-  <use href="#wheat" x="322" y="256" width="54" height="90"/>
-  <use href="#wheat" x="380" y="256" width="54" height="90"/>
-  <use href="#wheat" x="438" y="256" width="54" height="90"/>
-  <use href="#wheat" x="496" y="256" width="54" height="90"/>
-  <use href="#wheat" x="554" y="256" width="54" height="90"/>
-  <use href="#wheat" x="612" y="256" width="54" height="90"/>
-  <use href="#wheat" x="670" y="256" width="54" height="90"/>
-  <use href="#wheat" x="728" y="256" width="54" height="90"/>
-  <use href="#wheat" x="786" y="256" width="54" height="90"/>
-  <use href="#wheat" x="178" y="334" width="58" height="90"/>
-  <use href="#wheat" x="236" y="334" width="58" height="90"/>
-  <use href="#wheat" x="294" y="334" width="58" height="90"/>
-  <use href="#wheat" x="352" y="334" width="58" height="90"/>
-  <use href="#wheat" x="410" y="334" width="58" height="90"/>
-  <use href="#wheat" x="468" y="334" width="58" height="90"/>
-  <use href="#wheat" x="526" y="334" width="58" height="90"/>
-  <use href="#wheat" x="584" y="334" width="58" height="90"/>
-  <use href="#wheat" x="642" y="334" width="58" height="90"/>
-  <use href="#wheat" x="700" y="334" width="58" height="90"/>
-  <use href="#wheat" x="758" y="334" width="58" height="90"/>
-  <use href="#wheat" x="816" y="334" width="58" height="90"/>
-  <use href="#wheat" x="206" y="412" width="54" height="90"/>
-  <use href="#wheat" x="264" y="412" width="54" height="90"/>
-  <use href="#wheat" x="322" y="412" width="54" height="90"/>
-  <use href="#wheat" x="380" y="412" width="54" height="90"/>
-  <use href="#wheat" x="438" y="412" width="54" height="90"/>
-  <use href="#wheat" x="496" y="412" width="54" height="90"/>
-  <use href="#wheat" x="554" y="412" width="54" height="90"/>
-  <use href="#wheat" x="612" y="412" width="54" height="90"/>
-  <use href="#wheat" x="670" y="412" width="54" height="90"/>
-  <use href="#wheat" x="728" y="412" width="54" height="90"/>
-  <use href="#wheat" x="786" y="412" width="54" height="90"/>
-  <use href="#wheat" x="178" y="490" width="58" height="90"/>
-  <use href="#wheat" x="236" y="490" width="58" height="90"/>
-  <use href="#wheat" x="294" y="490" width="58" height="90"/>
-  <use href="#wheat" x="352" y="490" width="58" height="90"/>
-  <use href="#wheat" x="410" y="490" width="58" height="90"/>
-  <use href="#wheat" x="468" y="490" width="58" height="90"/>
-  <use href="#wheat" x="526" y="490" width="58" height="90"/>
-  <use href="#wheat" x="584" y="490" width="58" height="90"/>
-  <use href="#wheat" x="642" y="490" width="58" height="90"/>
-  <use href="#wheat" x="700" y="490" width="58" height="90"/>
-  <use href="#wheat" x="758" y="490" width="58" height="90"/>
-  <use href="#wheat" x="816" y="490" width="58" height="90"/>
-  <use href="#wheat" x="206" y="568" width="54" height="90"/>
-  <use href="#wheat" x="264" y="568" width="54" height="90"/>
-  <use href="#wheat" x="322" y="568" width="54" height="90"/>
-  <use href="#wheat" x="380" y="568" width="54" height="90"/>
-  <use href="#wheat" x="438" y="568" width="54" height="90"/>
-  <use href="#wheat" x="496" y="568" width="54" height="90"/>
-  <use href="#wheat" x="554" y="568" width="54" height="90"/>
-  <use href="#wheat" x="612" y="568" width="54" height="90"/>
-  <use href="#wheat" x="670" y="568" width="54" height="90"/>
-  <use href="#wheat" x="728" y="568" width="54" height="90"/>
-  <use href="#wheat" x="786" y="568" width="54" height="90"/>
-  <use href="#wheat" x="178" y="646" width="58" height="90"/>
-  <use href="#wheat" x="236" y="646" width="58" height="90"/>
-  <use href="#wheat" x="294" y="646" width="58" height="90"/>
-  <use href="#wheat" x="352" y="646" width="58" height="90"/>
-  <use href="#wheat" x="410" y="646" width="58" height="90"/>
-  <use href="#wheat" x="468" y="646" width="58" height="90"/>
-  <use href="#wheat" x="526" y="646" width="58" height="90"/>
-  <use href="#wheat" x="584" y="646" width="58" height="90"/>
-  <use href="#wheat" x="642" y="646" width="58" height="90"/>
-  <use href="#wheat" x="700" y="646" width="58" height="90"/>
-  <use href="#wheat" x="758" y="646" width="58" height="90"/>
-  <use href="#wheat" x="816" y="646" width="58" height="90"/>
-  <use href="#wheat" x="206" y="724" width="54" height="90"/>
-  <use href="#wheat" x="264" y="724" width="54" height="90"/>
-  <use href="#wheat" x="322" y="724" width="54" height="90"/>
-  <use href="#wheat" x="380" y="724" width="54" height="90"/>
-  <use href="#wheat" x="438" y="724" width="54" height="90"/>
-  <use href="#wheat" x="496" y="724" width="54" height="90"/>
-  <use href="#wheat" x="554" y="724" width="54" height="90"/>
-  <use href="#wheat" x="612" y="724" width="54" height="90"/>
-  <use href="#wheat" x="670" y="724" width="54" height="90"/>
-  <use href="#wheat" x="728" y="724" width="54" height="90"/>
-  <use href="#wheat" x="786" y="724" width="54" height="90"/>
-  <use href="#wheat" x="178" y="802" width="58" height="90"/>
-  <use href="#wheat" x="236" y="802" width="58" height="90"/>
-  <use href="#wheat" x="294" y="802" width="58" height="90"/>
-  <use href="#wheat" x="352" y="802" width="58" height="90"/>
-  <use href="#wheat" x="410" y="802" width="58" height="90"/>
-  <use href="#wheat" x="468" y="802" width="58" height="90"/>
-  <use href="#wheat" x="526" y="802" width="58" height="90"/>
-  <use href="#wheat" x="584" y="802" width="58" height="90"/>
-  <use href="#wheat" x="642" y="802" width="58" height="90"/>
-  <use href="#wheat" x="700" y="802" width="58" height="90"/>
-  <use href="#wheat" x="758" y="802" width="58" height="90"/>
-  <use href="#wheat" x="816" y="802" width="58" height="90"/>
+  <!-- Fond brun + sillons -->
+  <rect width="100" height="100" fill="url(#soil03)"/>
+
+  <g stroke="#3a2210" stroke-linecap="round" fill="none" opacity="0.45">
+    <path d="M8 2 C6 50 6 98 8 98" stroke-width="2.4"/>
+    <path d="M20 2 C18 50 18 98 20 98" stroke-width="2.4"/>
+    <path d="M32 2 C30 50 30 98 32 98" stroke-width="2.4"/>
+    <path d="M44 2 C42 50 42 98 44 98" stroke-width="2.4"/>
+    <path d="M56 2 C54 50 54 98 56 98" stroke-width="2.4"/>
+    <path d="M68 2 C66 50 66 98 68 98" stroke-width="2.4"/>
+    <path d="M80 2 C78 50 78 98 80 98" stroke-width="2.4"/>
+    <path d="M92 2 C90 50 90 98 92 98" stroke-width="2.4"/>
+  </g>
+
+  <!-- 4 rangées × 4 épis (dense champ doré) -->
+  <use href="#wheat03" x="6" y="6" width="13" height="20"/>
+  <use href="#wheat03" x="26" y="6" width="13" height="20"/>
+  <use href="#wheat03" x="46" y="6" width="13" height="20"/>
+  <use href="#wheat03" x="66" y="6" width="13" height="20"/>
+  <use href="#wheat03" x="82" y="6" width="13" height="20"/>
+
+  <use href="#wheat03" x="16" y="28" width="13" height="20"/>
+  <use href="#wheat03" x="36" y="28" width="13" height="20"/>
+  <use href="#wheat03" x="56" y="28" width="13" height="20"/>
+  <use href="#wheat03" x="76" y="28" width="13" height="20"/>
+
+  <use href="#wheat03" x="6" y="50" width="13" height="20"/>
+  <use href="#wheat03" x="26" y="50" width="13" height="20"/>
+  <use href="#wheat03" x="46" y="50" width="13" height="20"/>
+  <use href="#wheat03" x="66" y="50" width="13" height="20"/>
+  <use href="#wheat03" x="82" y="50" width="13" height="20"/>
+
+  <use href="#wheat03" x="16" y="72" width="13" height="20"/>
+  <use href="#wheat03" x="36" y="72" width="13" height="20"/>
+  <use href="#wheat03" x="56" y="72" width="13" height="20"/>
+  <use href="#wheat03" x="76" y="72" width="13" height="20"/>
+
+  <!-- Petits éclats dorés ambiants -->
+  <g fill="#ffe066" opacity="0.4">
+    <circle cx="11" cy="42" r="0.6"/>
+    <circle cx="44" cy="22" r="0.5"/>
+    <circle cx="72" cy="62" r="0.6"/>
+    <circle cx="90" cy="80" r="0.5"/>
+  </g>
+
+  <!-- Bordure planche de bois -->
+  <rect x="0" y="0" width="100" height="100" rx="6" fill="none" stroke="#3a2210" stroke-width="3"/>
+  <rect x="1.6" y="1.6" width="96.8" height="96.8" rx="5" fill="none" stroke="#c98a45" stroke-width="0.8" opacity="0.55"/>
 </svg>
