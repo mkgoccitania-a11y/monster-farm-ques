@@ -356,103 +356,133 @@ export default function FarmPage() {
         <p className="text-[11px] font-black text-emerald-100">Objectif : {todayGoal}</p>
       </section>
 
-      {/* Créature + stats */}
-      <section className="grid grid-cols-[1.1fr_1fr] gap-3">
-        <div className="poke-card bg-gradient-to-br from-violet-500/30 via-indigo-600/25 to-slate-900/40 p-3">
-          <CreatureCard creature={creature} mood={mood} reaction={reaction !== "Bienvenue !" ? reaction : null} state={state} size="md" />
-          <div className="mt-2 space-y-1.5">
-            <StatBar label="Faim" value={creature.hunger} max={100} color="amber" iconName="food" />
-            <StatBar label="Bonheur" value={creature.happiness} max={100} color="rose" iconName="happiness" />
-            <StatBar label="Énergie" value={state.progress.energy} max={state.progress.energyMax} color="cyan" iconName="energy" />
-          </div>
-          <div className="mt-2 grid grid-cols-2 gap-1 text-[10px] font-black">
-            <div className="flex items-center justify-center gap-1 rounded-lg bg-rose-500/20 px-2 py-1 text-rose-100"><GameIcon name="strength" size={12} />{creature.stats.attack}</div>
-            <div className="flex items-center justify-center gap-1 rounded-lg bg-cyan-500/20 px-2 py-1 text-cyan-100"><GameIcon name="speed" size={12} />{creature.stats.speed}</div>
-            <div className="flex items-center justify-center gap-1 rounded-lg bg-violet-500/20 px-2 py-1 text-violet-100"><GameIcon name="intelligence" size={12} />{creature.stats.intelligence}</div>
-            <div className="flex items-center justify-center gap-1 rounded-lg bg-emerald-500/20 px-2 py-1 text-emerald-100"><GameIcon name="defense" size={12} />{creature.stats.defense}</div>
-          </div>
-          <div className="mt-2">
-            <p className="mb-1 text-[10px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
-            <StatusEffectsBar effects={statusEffects} compact />
-          </div>
-          <button
-            onClick={() => setEvoPreviewOpen(true)}
-            className="mt-2 w-full rounded-xl border border-violet-300/30 bg-violet-500/15 px-2 py-1.5 text-[11px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/25 active:scale-95"
-          >
-            ❓ Prochaine évolution {evolutionInfo?.ready ? "(prêt !)" : ""}
-          </button>
-          {evolutionInfo?.ready && (
-            <button onClick={handleEvolveClick} className="btn-primary mt-2 w-full text-xs">
-              ✨ Faire évoluer !
-            </button>
-          )}
-          <p className="mt-1 text-center text-[10px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
-        </div>
+      {/* Carte créature : infos à gauche, sprite à droite */}
+      <section className="poke-card bg-gradient-to-br from-violet-500/30 via-indigo-600/25 to-slate-900/40 p-3">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+          {/* Colonne gauche : nom, barres, stats, statut, évolution */}
+          <div className="min-w-0 space-y-2">
+            <div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <TypeBadge type={creature.type} size="xs" />
+                <span className="chip">Lv {creature.level}</span>
+                <span className="chip">Forme {creature.evolution_stage}</span>
+                <span className="chip">× {creature.multiplication_table}</span>
+              </div>
+              <p className="mt-1 truncate text-lg font-black text-white drop-shadow">{creature.name}</p>
+            </div>
 
-        <div className="poke-card bg-gradient-to-br from-amber-500/25 via-orange-600/20 to-slate-900/40 p-2.5">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="text-[11px] font-black uppercase tracking-wide text-amber-200">
-              Potager
-            </p>
-            <button
-              onClick={() => setCropsHelp(true)}
-              aria-label="Cultures"
-              className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[10px] font-black text-amber-100 backdrop-blur-md hover:bg-white/20 active:scale-95"
-            >
-              <GameIcon name="help" size={11} /> Cultures
-            </button>
-          </div>
-          {/* Détail des graines par type (les verrouillées sont grisées) */}
-          <div className="mb-2 flex flex-wrap items-center gap-1 text-[10px] font-black">
-            {(["fast", "medium", "slow"] as CropType[]).map((type) => {
-              const count = state.progress.seeds[type] ?? 0;
-              const cfg = getCropConfig(type);
-              const locked = state.progress.unlockedZones < cfg.unlockZone;
-              const iconName = type === "fast" ? "sprout" : type === "medium" ? "berry" : "root";
-              const colorCls = locked
-                ? "border-white/10 bg-white/5 text-white/40"
-                : count > 0
-                ? "border-emerald-300/40 bg-emerald-500/20 text-emerald-100"
-                : "border-rose-300/40 bg-rose-500/20 text-rose-100";
-              return (
-                <button
-                  key={type}
-                  onClick={() => locked ? setCropsHelp(true) : (count === 0 ? setPanel("shop") : null)}
-                  title={locked ? "Verrouillé, voir explications" : count === 0 ? "Aller au shop" : `${count} ${cropLabel[type]}`}
-                  className={`inline-flex items-center gap-1 rounded-lg border px-1.5 py-0.5 backdrop-blur-md active:scale-95 ${colorCls}`}
-                >
-                  {locked && <GameIcon name="lock" size={10} />}
-                  <GameIcon name={iconName} size={11} />
-                  <span>{cropLabel[type]}: {count}</span>
+            <div className="space-y-1.5">
+              <StatBar label="Faim" value={creature.hunger} max={100} color="amber" iconName="food" />
+              <StatBar label="Bonheur" value={creature.happiness} max={100} color="rose" iconName="happiness" />
+              <StatBar label="Énergie" value={state.progress.energy} max={state.progress.energyMax} color="cyan" iconName="energy" />
+            </div>
+
+            <div className="grid grid-cols-4 gap-1 text-[10px] font-black">
+              <div className="flex items-center justify-center gap-1 rounded-lg bg-rose-500/20 px-1.5 py-1 text-rose-100"><GameIcon name="strength" size={12} />{creature.stats.attack}</div>
+              <div className="flex items-center justify-center gap-1 rounded-lg bg-cyan-500/20 px-1.5 py-1 text-cyan-100"><GameIcon name="speed" size={12} />{creature.stats.speed}</div>
+              <div className="flex items-center justify-center gap-1 rounded-lg bg-violet-500/20 px-1.5 py-1 text-violet-100"><GameIcon name="intelligence" size={12} />{creature.stats.intelligence}</div>
+              <div className="flex items-center justify-center gap-1 rounded-lg bg-emerald-500/20 px-1.5 py-1 text-emerald-100"><GameIcon name="defense" size={12} />{creature.stats.defense}</div>
+            </div>
+
+            <div>
+              <p className="mb-1 text-[10px] font-black uppercase tracking-wide text-cyan-200">Effets actifs</p>
+              <StatusEffectsBar effects={statusEffects} compact />
+            </div>
+
+            <div className="space-y-1.5">
+              <button
+                onClick={() => setEvoPreviewOpen(true)}
+                className="w-full rounded-xl border border-violet-300/30 bg-violet-500/15 px-2 py-1.5 text-[11px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/25 active:scale-95"
+              >
+                ❓ Prochaine évolution {evolutionInfo?.ready ? "(prêt !)" : ""}
+              </button>
+              {evolutionInfo?.ready && (
+                <button onClick={handleEvolveClick} className="btn-primary w-full text-xs">
+                  ✨ Faire évoluer !
                 </button>
-              );
-            })}
-            <span className="inline-flex items-center gap-0.5 rounded-lg border border-amber-300/30 bg-amber-500/15 px-1.5 py-0.5 text-amber-100">
-              <GameIcon name="food" size={11} />{state.progress.food}
-            </span>
+              )}
+              <p className="text-center text-[10px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-2">
-            {potagerCases.map((plot) => {
-              const nextLockedId = `plot-${state.progress.plots.length + 1}`;
-              const canBuy = plot.id === nextLockedId && state.progress.plots.length < TOTAL_PLOTS;
-              return (
-                <FarmPlotTile
-                  key={plot.id}
-                  plot={plot}
-                  isBuying={false}
-                  canBuy={canBuy}
-                  canPlant
-                  unlockedCrops={unlockedCrops}
-                  seedsByType={state.progress.seeds}
-                  onBuy={handleBuyPlot}
-                  onPlant={handlePlant}
-                  onHarvest={handleHarvest}
-                  onAskCropsInfo={() => setCropsHelp(true)}
-                  onNoSeed={() => { setPanel("shop"); setMessage("Achète une graine au shop !"); }}
-                />
-              );
-            })}
+
+          {/* Colonne droite : sprite */}
+          <div className="flex shrink-0 items-start justify-center">
+            <CreatureCard
+              creature={creature}
+              mood={mood}
+              reaction={reaction !== "Bienvenue !" ? reaction : null}
+              state={state}
+              size="sm"
+            />
           </div>
+        </div>
+      </section>
+
+      {/* Potager : grille 2×2 des 4 cases en pleine largeur */}
+      <section className="poke-card bg-gradient-to-br from-amber-500/25 via-orange-600/20 to-slate-900/40 p-2.5">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-[11px] font-black uppercase tracking-wide text-amber-200">
+            Potager
+          </p>
+          <button
+            onClick={() => setCropsHelp(true)}
+            aria-label="Cultures"
+            className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[10px] font-black text-amber-100 backdrop-blur-md hover:bg-white/20 active:scale-95"
+          >
+            <GameIcon name="help" size={11} /> Cultures
+          </button>
+        </div>
+        {/* Détail des graines par type (les verrouillées sont grisées) */}
+        <div className="mb-2 flex flex-wrap items-center gap-1 text-[10px] font-black">
+          {(["fast", "medium", "slow"] as CropType[]).map((type) => {
+            const count = state.progress.seeds[type] ?? 0;
+            const cfg = getCropConfig(type);
+            const locked = state.progress.unlockedZones < cfg.unlockZone;
+            const iconName = type === "fast" ? "sprout" : type === "medium" ? "berry" : "root";
+            const colorCls = locked
+              ? "border-white/10 bg-white/5 text-white/40"
+              : count > 0
+              ? "border-emerald-300/40 bg-emerald-500/20 text-emerald-100"
+              : "border-rose-300/40 bg-rose-500/20 text-rose-100";
+            return (
+              <button
+                key={type}
+                onClick={() => locked ? setCropsHelp(true) : (count === 0 ? setPanel("shop") : null)}
+                title={locked ? "Verrouillé, voir explications" : count === 0 ? "Aller au shop" : `${count} ${cropLabel[type]}`}
+                className={`inline-flex items-center gap-1 rounded-lg border px-1.5 py-0.5 backdrop-blur-md active:scale-95 ${colorCls}`}
+              >
+                {locked && <GameIcon name="lock" size={10} />}
+                <GameIcon name={iconName} size={11} />
+                <span>{cropLabel[type]}: {count}</span>
+              </button>
+            );
+          })}
+          <span className="inline-flex items-center gap-0.5 rounded-lg border border-amber-300/30 bg-amber-500/15 px-1.5 py-0.5 text-amber-100">
+            <GameIcon name="food" size={11} />{state.progress.food}
+          </span>
+        </div>
+        {/* 4 cases en grille 2×2 */}
+        <div className="grid grid-cols-2 gap-2">
+          {potagerCases.map((plot) => {
+            const nextLockedId = `plot-${state.progress.plots.length + 1}`;
+            const canBuy = plot.id === nextLockedId && state.progress.plots.length < TOTAL_PLOTS;
+            return (
+              <FarmPlotTile
+                key={plot.id}
+                plot={plot}
+                isBuying={false}
+                canBuy={canBuy}
+                canPlant
+                unlockedCrops={unlockedCrops}
+                seedsByType={state.progress.seeds}
+                onBuy={handleBuyPlot}
+                onPlant={handlePlant}
+                onHarvest={handleHarvest}
+                onAskCropsInfo={() => setCropsHelp(true)}
+                onNoSeed={() => { setPanel("shop"); setMessage("Achète une graine au shop !"); }}
+              />
+            );
+          })}
         </div>
       </section>
 
