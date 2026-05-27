@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --type-fire: #f97316;
+  --type-water: #38bdf8;
+  --type-plant: #22c55e;
+  --type-electric: #facc15;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(60% 50% at 10% 0%, rgba(167, 139, 250, 0.28) 0%, transparent 60%),
+    radial-gradient(50% 40% at 90% 0%, rgba(34, 211, 238, 0.25) 0%, transparent 60%),
+    radial-gradient(45% 35% at 50% 100%, rgba(34, 197, 94, 0.18) 0%, transparent 60%),
+    linear-gradient(180deg, #0B1226 0%, #1e1b4b 55%, #0B1226 100%);
+  color: #E2E8F0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 1rem 1rem calc(2rem + env(safe-area-inset-bottom));
+  position: relative;
+  z-index: 1;
+}
+
+/* Composants utilitaires */
+
+.glass {
+  @apply rounded-3xl border border-white/15 bg-white/10 backdrop-blur-md shadow-cardLift;
+}
+
+.glass-strong {
+  @apply rounded-3xl border border-white/20 bg-white/15 backdrop-blur-xl shadow-cardLift;
+}
+
+.glass-dark {
+  @apply rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-md shadow-cardLift;
+}
+
+.action-btn {
+  @apply min-h-14 rounded-2xl px-4 text-lg font-black shadow-bubble transition active:scale-95;
+}
+
+.panel {
+  @apply rounded-3xl border border-white/15 bg-white/10 backdrop-blur-md p-4 shadow-cardLift text-white;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-2 py-0.5 text-[11px] font-black backdrop-blur-md;
+}
+
+.btn-primary {
+  @apply rounded-2xl px-4 py-3 text-base font-black text-white shadow-glow transition active:scale-95;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+}
+
+.btn-secondary {
+  @apply rounded-2xl border border-white/25 bg-white/10 px-4 py-3 text-base font-black text-white backdrop-blur-md transition active:scale-95;
+}
+
+.btn-soft {
+  @apply rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-sm font-black text-white backdrop-blur-md transition active:scale-95 hover:bg-white/20;
+}
+
+/* Type colors as utility */
+.type-fire { background: linear-gradient(135deg, #fb923c, #ef4444); color: white; }
+.type-water { background: linear-gradient(135deg, #38bdf8, #2563eb); color: white; }
+.type-plant { background: linear-gradient(135deg, #4ade80, #16a34a); color: white; }
+.type-electric { background: linear-gradient(135deg, #fde047, #eab308); color: #1f2937; }
+
+/* Pokedex-like inner card */
+.poke-card {
+  @apply relative overflow-hidden rounded-2xl border border-white/20 backdrop-blur-md shadow-cardLift;
+}
+
+/* Anim text */
+.shimmer-text {
+  background: linear-gradient(90deg, #fff, #a78bfa, #22d3ee, #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Scrollbar discret */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }

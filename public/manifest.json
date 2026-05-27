@@ -1,0 +1,71 @@
+{
+  "name": "Monster Farm Quest",
+  "short_name": "MonsterFarm",
+  "description": "Apprends les tables de multiplication en élevant tes créatures !",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B1226",
+  "theme_color": "#4F46E5",
+  "scope": "/",
+  "lang": "fr",
+  "id": "monster-farm-quest",
+  "icons": [
+    {
+      "src": "/icon-192.webp",
+      "type": "image/webp",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.webp",
+      "type": "image/webp",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ferme",
+      "short_name": "Ferme",
+      "description": "Aller à la ferme",
+      "url": "/farm",
+      "icons": [{ "src": "/icon-192.webp", "sizes": "192x192" }]
+    },
+    {
+      "name": "Combat",
+      "short_name": "Combat",
+      "description": "Lancer un combat",
+      "url": "/battle",
+      "icons": [{ "src": "/icon-192.webp", "sizes": "192x192" }]
+    },
+    {
+      "name": "Entraînement",
+      "short_name": "Train",
+      "description": "Camp d'entraînement",
+      "url": "/train",
+      "icons": [{ "src": "/icon-192.webp", "sizes": "192x192" }]
+    },
+    {
+      "name": "Codex",
+      "short_name": "Codex",
+      "description": "Mon Pokédex",
+      "url": "/pokedex",
+      "icons": [{ "src": "/icon-192.webp", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["games", "education", "kids"],
+  "prefer_related_applications": false
+}
