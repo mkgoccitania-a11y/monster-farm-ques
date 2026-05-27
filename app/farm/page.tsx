@@ -20,7 +20,10 @@ import StatBar from "@/components/StatBar";
 import StatusEffectsBar from "@/components/StatusEffectsBar";
 import TypeBadge from "@/components/TypeBadge";
 import {
+  buyEnergyPotion,
   buySeeds,
+  ENERGY_POTION_COST,
+  ENERGY_POTION_GAIN,
   feedCurrentCreature,
   getCropConfig,
   getEnergyRefillInMs,
@@ -30,8 +33,10 @@ import {
   getStatusEffects,
   getZoneName,
   harvestCrop,
+  isEnergyRegenFast,
   plantCrop,
   resolveAnswer,
+  restCurrentCreature,
   triggerEvolution,
   upgradeFarmPlot,
   upgradeCurrentCreatureStat
@@ -199,6 +204,35 @@ export default function FarmPage() {
     });
   };
 
+  const handleRest = () => {
+    if (state.progress.food <= 0) { setMessage("Pas de ration pour la sieste."); flashMood("oops", "Vide"); return; }
+    if (state.progress.energy >= state.progress.energyMax) { setMessage("Énergie déjà au max."); return; }
+    askThenRun("Sieste · 1 multiplication", 1, (results) => {
+      const { next, allCorrect } = applyAnswers(results, 0.5);
+      const rested = restCurrentCreature(next, allCorrect);
+      if (!rested.ok) { commit(next); setMessage(rested.reason ?? "Sieste impossible."); flashMood("oops", "Pas pu"); return; }
+      commit(rested.nextState);
+      flashMood(allCorrect ? "happy" : "idle", allCorrect ? "Bien dormi !" : "Petit roupillon");
+      popBurst(`Énergie +${rested.energyGain}`, "blue");
+      setMessage(`Sieste : +${rested.energyGain} énergie, +${rested.happinessGain} bonheur (−1 ration).`);
+    });
+  };
+
+  const handleBuyEnergyPotion = () => {
+    if (state.progress.energy >= state.progress.energyMax) { setMessage("Énergie déjà au max."); return; }
+    if (state.progress.coins < ENERGY_POTION_COST) { setMessage(`Il faut ${ENERGY_POTION_COST} pièces pour la potion.`); flashMood("oops", "Pas assez"); return; }
+    askThenRun(`Potion d'énergie · 1 multiplication`, 1, (results) => {
+      const { next, allCorrect } = applyAnswers(results, 0.5);
+      if (!allCorrect) { commit(next); setMessage("Réponse fausse, achat refusé."); flashMood("oops", "Raté"); return; }
+      const bought = buyEnergyPotion(next);
+      if (!bought.ok) { commit(next); setMessage(bought.reason ?? "Achat impossible."); flashMood("oops", "Raté"); return; }
+      commit(bought.nextState);
+      flashMood("happy", "Boost !");
+      popBurst(`Énergie +${ENERGY_POTION_GAIN}`, "blue");
+      setMessage(`Potion d'énergie : −${ENERGY_POTION_COST} pièces, +${ENERGY_POTION_GAIN} énergie.`);
+    });
+  };
+
   const handleHarvest = (plotId: string) => {
     askThenRun("Récolte · 1 multiplication", 1, (results) => {
       const { next, allCorrect } = applyAnswers(results, 0.55);
@@ -306,6 +340,9 @@ export default function FarmPage() {
         coins={state.progress.coins}
         happiness={creature.happiness}
         energy={state.progress.energy}
+        energyMax={state.progress.energyMax}
+        energyRefillMs={getEnergyRefillInMs(state, now)}
+        energyRegenFast={isEnergyRegenFast(state)}
         rare={state.progress.rareMaterial}
         onRareClick={() => setRareHelp(true)}
       />
@@ -420,18 +457,22 @@ export default function FarmPage() {
       </section>
 
       {/* Actions principales */}
-      <section className="grid grid-cols-3 gap-2">
+      <section className="grid grid-cols-4 gap-2">
         <button onClick={handleFeed} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-amber-400/40 to-orange-700/30 p-2 text-center active:scale-95">
-          <div className="text-amber-200"><GameIcon name="food" size={26} /></div>
-          <p className="text-xs font-black text-white">Nourrir</p>
+          <div className="text-amber-200"><GameIcon name="food" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Nourrir</p>
+        </button>
+        <button onClick={handleRest} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-cyan-400/40 to-sky-700/30 p-2 text-center active:scale-95">
+          <div className="text-cyan-200"><GameIcon name="energy" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Sieste</p>
         </button>
         <Link href="/train" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-rose-400/40 to-pink-700/30 p-2 text-center active:scale-95">
-          <div className="text-rose-200"><GameIcon name="train" size={26} /></div>
-          <p className="text-xs font-black text-white">Train</p>
+          <div className="text-rose-200"><GameIcon name="train" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Train</p>
         </Link>
         <Link href="/battle" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-red-500/40 to-rose-800/30 p-2 text-center active:scale-95">
-          <div className="text-red-200"><GameIcon name="battle" size={26} /></div>
-          <p className="text-xs font-black text-white">Combat</p>
+          <div className="text-red-200"><GameIcon name="battle" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Combat</p>
         </Link>
       </section>
 
@@ -469,6 +510,25 @@ export default function FarmPage() {
                       </button>
                     );
                   })}
+                </div>
+                <div className="mt-2 border-t border-white/10 pt-2">
+                  <p className="mb-2 text-[11px] font-black uppercase tracking-wide text-cyan-200">Consommables</p>
+                  <button
+                    onClick={() => { setPanel("none"); handleBuyEnergyPotion(); }}
+                    disabled={state.progress.energy >= state.progress.energyMax}
+                    className="flex w-full items-center justify-between rounded-2xl border border-cyan-300/40 bg-gradient-to-r from-cyan-500/30 to-sky-700/30 p-3 text-left backdrop-blur-md active:scale-95 disabled:opacity-40"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="text-cyan-100"><GameIcon name="potion" size={24} /></div>
+                      <div>
+                        <p className="text-sm font-black text-white">Potion d'énergie</p>
+                        <p className="text-[10px] font-bold text-cyan-100">+{ENERGY_POTION_GAIN} énergie · 1 multiplication</p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-400/30 px-2 py-0.5 text-xs font-black text-amber-100">
+                      <GameIcon name="coin" size={12} />{ENERGY_POTION_COST}
+                    </span>
+                  </button>
                 </div>
               </div>
             )}

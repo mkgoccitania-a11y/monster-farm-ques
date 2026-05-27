@@ -380,8 +380,16 @@ const TYPE_ADVANTAGE: Record<CreatureType, CreatureType[]> = {
 
 const LEVEL_XP_STEP = 115;
 const CREATURE_XP_STEP = 90;
-const ENERGY_REGEN_MS = 3 * 60 * 1000;
+const ENERGY_REGEN_MS = 3 * 60 * 1000;        // 3 min par défaut
+const ENERGY_REGEN_FAST_MS = 2 * 60 * 1000;   // 2 min si bonheur > 75
 const NEEDS_DECAY_MS = 6 * 60 * 1000;
+
+// Durée actuelle de régen, fonction du bonheur de la créature active
+const energyRegenMsFor = (state: PlayerState): number => {
+  const c = state.creatures.find((cr) => cr.id === state.progress.currentCreatureId);
+  if (c && c.happiness > 75) return ENERGY_REGEN_FAST_MS;
+  return ENERGY_REGEN_MS;
+};
 
 const random = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
@@ -612,14 +620,15 @@ export const applyTimeSystems = (state: PlayerState, now = getNow()): PlayerStat
   let next = state;
   let changed = false;
 
-  const energyTicks = Math.floor((now - state.progress.lastEnergyTickAt) / ENERGY_REGEN_MS);
+  const regenMs = energyRegenMsFor(state);
+  const energyTicks = Math.floor((now - state.progress.lastEnergyTickAt) / regenMs);
   if (energyTicks > 0) {
     next = {
       ...next,
       progress: {
         ...next.progress,
         energy: clamp(next.progress.energy + energyTicks, 0, next.progress.energyMax),
-        lastEnergyTickAt: state.progress.lastEnergyTickAt + energyTicks * ENERGY_REGEN_MS
+        lastEnergyTickAt: state.progress.lastEnergyTickAt + energyTicks * regenMs
       }
     };
     changed = true;
@@ -1954,8 +1963,72 @@ export const getEnergyRefillInMs = (state: PlayerState, now = getNow()) => {
   if (state.progress.energy >= state.progress.energyMax) {
     return 0;
   }
+  const regenMs = energyRegenMsFor(state);
   const elapsed = now - state.progress.lastEnergyTickAt;
-  return clamp(ENERGY_REGEN_MS - elapsed, 0, ENERGY_REGEN_MS);
+  return clamp(regenMs - elapsed, 0, regenMs);
+};
+
+// Indique si la régen est en mode "rapide" (bonheur > 75)
+export const isEnergyRegenFast = (state: PlayerState): boolean => {
+  const c = state.creatures.find((cr) => cr.id === state.progress.currentCreatureId);
+  return Boolean(c && c.happiness > 75);
+};
+
+// ============================================================
+// REPOS / SIESTE — action active qui rend de l'énergie
+// ============================================================
+export const restCurrentCreature = (state: PlayerState, wasCorrect: boolean):
+  { ok: boolean; nextState: PlayerState; reason?: string; energyGain: number; happinessGain: number } => {
+  if (state.progress.food <= 0) {
+    return { ok: false, nextState: state, reason: "Plus de nourriture pour une sieste.", energyGain: 0, happinessGain: 0 };
+  }
+  if (state.progress.energy >= state.progress.energyMax) {
+    return { ok: false, nextState: state, reason: "Énergie déjà au max.", energyGain: 0, happinessGain: 0 };
+  }
+  const current = getCurrentCreature(state);
+  const energyGain = wasCorrect ? 3 : 1;
+  const happinessGain = wasCorrect ? 3 : 1;
+  const next: PlayerState = {
+    ...state,
+    progress: {
+      ...state.progress,
+      food: Math.max(0, state.progress.food - 1),
+      energy: clamp(state.progress.energy + energyGain, 0, state.progress.energyMax)
+    },
+    creatures: state.creatures.map((c) =>
+      c.id === current.id
+        ? { ...c, happiness: clamp(c.happiness + happinessGain, 0, 100) }
+        : c
+    )
+  };
+  return { ok: true, nextState: next, energyGain, happinessGain };
+};
+
+// ============================================================
+// POTION D'ÉNERGIE — achat au shop
+// ============================================================
+export const ENERGY_POTION_COST = 20;
+export const ENERGY_POTION_GAIN = 5;
+
+export const buyEnergyPotion = (state: PlayerState):
+  { ok: boolean; nextState: PlayerState; reason?: string } => {
+  if (state.progress.coins < ENERGY_POTION_COST) {
+    return { ok: false, nextState: state, reason: `Il faut ${ENERGY_POTION_COST} pièces.` };
+  }
+  if (state.progress.energy >= state.progress.energyMax) {
+    return { ok: false, nextState: state, reason: "Énergie déjà au max." };
+  }
+  return {
+    ok: true,
+    nextState: {
+      ...state,
+      progress: {
+        ...state.progress,
+        coins: state.progress.coins - ENERGY_POTION_COST,
+        energy: clamp(state.progress.energy + ENERGY_POTION_GAIN, 0, state.progress.energyMax)
+      }
+    }
+  };
 };
 
 

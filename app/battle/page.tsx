@@ -377,6 +377,7 @@ export default function BattlePage() {
         coins={state.progress.coins}
         happiness={creature.happiness}
         energy={state.progress.energy}
+        energyMax={state.progress.energyMax}
         rare={state.progress.rareMaterial}
         onRareClick={() => setRareHelp(true)}
       />

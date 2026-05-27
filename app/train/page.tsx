@@ -211,6 +211,7 @@ export default function TrainPage() {
         coins={state.progress.coins}
         happiness={creature.happiness}
         energy={state.progress.energy}
+        energyMax={state.progress.energyMax}
         rare={state.progress.rareMaterial}
       />
 
