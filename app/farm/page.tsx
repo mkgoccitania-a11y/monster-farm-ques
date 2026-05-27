@@ -418,17 +418,37 @@ export default function FarmPage() {
             </div>
           </div>
 
-          {/* Colonne droite : sprite */}
+          {/* Colonne droite : sprite (taille md pour mieux le voir) */}
           <div className="flex shrink-0 items-start justify-center">
             <CreatureCard
               creature={creature}
               mood={mood}
               reaction={reaction !== "Bienvenue !" ? reaction : null}
               state={state}
-              size="sm"
+              size="md"
             />
           </div>
         </div>
+      </section>
+
+      {/* Actions principales (sous la tuile du monstre) */}
+      <section className="grid grid-cols-4 gap-2">
+        <button onClick={handleFeed} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-amber-400/40 to-orange-700/30 p-2 text-center active:scale-95">
+          <div className="text-amber-200"><GameIcon name="food" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Nourrir</p>
+        </button>
+        <button onClick={handleRest} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-cyan-400/40 to-sky-700/30 p-2 text-center active:scale-95">
+          <div className="text-cyan-200"><GameIcon name="energy" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Sieste</p>
+        </button>
+        <Link href="/train" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-rose-400/40 to-pink-700/30 p-2 text-center active:scale-95">
+          <div className="text-rose-200"><GameIcon name="train" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Entrainement</p>
+        </Link>
+        <Link href="/battle" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-red-500/40 to-rose-800/30 p-2 text-center active:scale-95">
+          <div className="text-red-200"><GameIcon name="battle" size={24} /></div>
+          <p className="text-[11px] font-black text-white">Combat</p>
+        </Link>
       </section>
 
       {/* Potager : grille 2×2 des 4 cases en pleine largeur */}
@@ -497,26 +517,6 @@ export default function FarmPage() {
             );
           })}
         </div>
-      </section>
-
-      {/* Actions principales */}
-      <section className="grid grid-cols-4 gap-2">
-        <button onClick={handleFeed} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-amber-400/40 to-orange-700/30 p-2 text-center active:scale-95">
-          <div className="text-amber-200"><GameIcon name="food" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Nourrir</p>
-        </button>
-        <button onClick={handleRest} className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-cyan-400/40 to-sky-700/30 p-2 text-center active:scale-95">
-          <div className="text-cyan-200"><GameIcon name="energy" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Sieste</p>
-        </button>
-        <Link href="/train" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-rose-400/40 to-pink-700/30 p-2 text-center active:scale-95">
-          <div className="text-rose-200"><GameIcon name="train" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Train</p>
-        </Link>
-        <Link href="/battle" className="poke-card flex flex-col items-center justify-center gap-1 bg-gradient-to-br from-red-500/40 to-rose-800/30 p-2 text-center active:scale-95">
-          <div className="text-red-200"><GameIcon name="battle" size={24} /></div>
-          <p className="text-[11px] font-black text-white">Combat</p>
-        </Link>
       </section>
 
       <section className="grid grid-cols-4 gap-2">
