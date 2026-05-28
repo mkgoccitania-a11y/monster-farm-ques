@@ -37,19 +37,19 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
             key={eff.id}
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex items-center gap-1.5 rounded-xl border px-2 py-1 text-[11px] font-black backdrop-blur-md ${
+            className={`flex min-w-0 items-center gap-1 overflow-hidden rounded-xl border px-1.5 py-1 text-[11px] font-black backdrop-blur-md ${
               eff.kind === "buff"
                 ? "border-emerald-300/40 bg-emerald-500/15 text-emerald-50"
                 : eff.severity === "major"
                 ? "border-rose-300/50 bg-rose-500/20 text-rose-50"
                 : "border-amber-300/40 bg-amber-500/15 text-amber-50"
             }`}
-            title={eff.description}
+            title={`${eff.label} — ${eff.description}`}
           >
-            <GameIcon name={icon} size={16} />
-            <div className="flex-1">
-              <p className="leading-tight">{eff.label}</p>
-              <p className={`text-[10px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
+            <GameIcon name={icon} size={compact ? 12 : 16} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate leading-tight">{eff.label}</p>
+              <p className={`truncate text-[10px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
             </div>
           </motion.div>
         );
