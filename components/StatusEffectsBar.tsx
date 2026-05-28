@@ -29,7 +29,9 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
     );
   }
   return (
-    <div className={`grid gap-1 ${compact ? "grid-cols-2" : "grid-cols-1"}`}>
+    // Compact = flex-wrap : chaque chip prend la largeur de son contenu et passe à la ligne si nécessaire
+    // (donc un long label reste visible en entier au lieu d'être tronqué)
+    <div className={compact ? "flex flex-wrap gap-1" : "grid grid-cols-1 gap-1"}>
       {effects.map((eff) => {
         const icon = iconByEffect[eff.id] ?? "warn";
         return (
@@ -37,7 +39,7 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
             key={eff.id}
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex min-w-0 items-center gap-1 overflow-hidden rounded-xl border px-1.5 py-1 text-[11px] font-black backdrop-blur-md ${
+            className={`flex items-center gap-1 whitespace-nowrap rounded-xl border px-1.5 py-1 text-[11px] font-black backdrop-blur-md ${
               eff.kind === "buff"
                 ? "border-emerald-300/40 bg-emerald-500/15 text-emerald-50"
                 : eff.severity === "major"
@@ -47,9 +49,9 @@ export default function StatusEffectsBar({ effects, compact = false }: StatusEff
             title={`${eff.label} — ${eff.description}`}
           >
             <GameIcon name={icon} size={compact ? 12 : 16} />
-            <div className="min-w-0 flex-1">
-              <p className="truncate leading-tight">{eff.label}</p>
-              <p className={`truncate text-[10px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
+            <div>
+              <p className="leading-tight">{eff.label}</p>
+              <p className={`text-[10px] font-normal opacity-80 ${compact ? "hidden" : ""}`}>{eff.description}</p>
             </div>
           </motion.div>
         );
