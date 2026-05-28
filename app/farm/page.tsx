@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import BottomGameNav from "@/components/BottomGameNav";
 import CreatureCard from "@/components/Creature";
 import CropsHelpPanel from "@/components/CropsHelpPanel";
+import DailyQuestsPanel from "@/components/DailyQuestsPanel";
 import EvolutionModal from "@/components/EvolutionModal";
 import EvolutionPreviewPanel from "@/components/EvolutionPreviewPanel";
 import FarmPlotTile, { FarmPlotUiModel } from "@/components/FarmPlotTile";
@@ -22,6 +23,7 @@ import TypeBadge from "@/components/TypeBadge";
 import {
   buyEnergyPotion,
   buySeeds,
+  claimQuestReward,
   ENERGY_POTION_COST,
   ENERGY_POTION_GAIN,
   feedCurrentCreature,
@@ -86,6 +88,7 @@ export default function FarmPage() {
   const [cropsHelp, setCropsHelp] = useState(false);
   const [rareHelp, setRareHelp] = useState(false);
   const [evoPreviewOpen, setEvoPreviewOpen] = useState(false);
+  const [questsOpen, setQuestsOpen] = useState(false);
 
   const [burst, setBurst] = useState<{ show: boolean; text: string; color: "gold" | "green" | "blue" }>({ show: false, text: "", color: "gold" });
   const [showEvolution, setShowEvolution] = useState(false);
@@ -254,8 +257,26 @@ export default function FarmPage() {
       commit(harvested.nextState);
       flashMood(allCorrect ? "happy" : "idle", getCreatureReaction(creature.type, "harvest"));
       popBurst(`+${harvested.gainedCoins}P +${harvested.gainedFood}N`, "gold");
-      setMessage("Récolte terminée.");
+      // 2e burst pour l'XP de la créature (récolte = elle progresse)
+      if (harvested.gainedXp > 0) {
+        window.setTimeout(() => popBurst(`+${harvested.gainedXp} XP ✨`, "blue"), 600);
+      }
+      const rareNote = harvested.rare > 0 ? ` +${harvested.rare} 💎` : "";
+      setMessage(`Récolte : +${harvested.gainedFood} 🍖 · +${harvested.gainedCoins} 🪙 · +${harvested.gainedXp} XP · +${harvested.gainedHappiness} 💖${rareNote}`);
     });
+  };
+
+  const handleClaimQuest = (questId: string) => {
+    const result = claimQuestReward(state, questId);
+    if (!result.ok) {
+      setMessage("Cette quête n'est pas (encore) prête.");
+      return;
+    }
+    commit(result.nextState);
+    const r = result.reward!;
+    popBurst(`+${r.coins} 🪙 +${r.xp} XP${r.rare ? ` +${r.rare} 💎` : ""}`, "gold");
+    setMessage("Quête réclamée ! Récompenses ajoutées.");
+    flashMood("happy", "Bien joué !");
   };
 
   const handlePlant = (plotId: string, cropType: CropType) => {
@@ -365,9 +386,61 @@ export default function FarmPage() {
         <HelpButton onClick={() => setHelp(true)} />
       </div>
 
-      <section className="poke-card bg-gradient-to-br from-emerald-500/25 via-green-700/20 to-slate-900/50 p-3">
-        <p className="text-[12px] font-black text-emerald-100">Objectif : {todayGoal}</p>
-      </section>
+      {/* Quêtes journalières : aperçu + bouton de réclamation directement sur la ferme */}
+      {(() => {
+        const quests = state.progress.dailyQuests?.quests ?? [];
+        const claimable = quests.filter((q) => !q.claimed && q.progress >= q.target);
+        const claimed = quests.filter((q) => q.claimed).length;
+        const total = quests.length || 3;
+        return (
+          <section
+            onClick={() => setQuestsOpen(true)}
+            className="poke-card cursor-pointer bg-gradient-to-br from-emerald-500/25 via-cyan-700/20 to-slate-900/50 p-3 active:scale-[0.99]"
+            role="button"
+            aria-label="Voir les quêtes du jour"
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="min-w-0 flex-1">
+                <p className="text-[12px] font-black uppercase tracking-wide text-cyan-200">📋 Quêtes du jour</p>
+                <p className="text-[13px] font-black text-white">
+                  {claimed} / {total} validées
+                  {claimable.length > 0 && <span className="ml-1 text-amber-200"> · {claimable.length} à réclamer ! 🎁</span>}
+                </p>
+              </div>
+              {claimable.length > 0 ? (
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleClaimQuest(claimable[0].id); }}
+                  className="shrink-0 rounded-full border border-amber-300/60 bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-[12px] font-black text-amber-950 shadow-glowElectric active:scale-95"
+                >
+                  Réclamer
+                </button>
+              ) : (
+                <span className="shrink-0 text-[12px] font-black text-emerald-200">Voir →</span>
+              )}
+            </div>
+            {/* Mini progress bars : 3 quêtes en aperçu */}
+            <div className="mt-2 grid grid-cols-3 gap-1">
+              {quests.slice(0, 3).map((q) => {
+                const pct = Math.min(100, Math.round((q.progress / q.target) * 100));
+                const done = q.progress >= q.target;
+                return (
+                  <div key={q.id} className="space-y-0.5">
+                    <p className="truncate text-[10px] font-black text-white/85" title={q.label}>{q.label}</p>
+                    <div className="h-1.5 overflow-hidden rounded-full bg-black/40">
+                      <div
+                        className={`h-full rounded-full ${q.claimed ? "bg-white/30" : done ? "bg-gradient-to-r from-emerald-400 to-green-500" : "bg-gradient-to-r from-cyan-400 to-sky-500"}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {/* Hint contextuel sous les quêtes */}
+            <p className="mt-2 text-[10px] font-black text-emerald-100/80">💡 {todayGoal}</p>
+          </section>
+        );
+      })()}
 
       {/* Carte créature : infos à gauche, sprite à droite. Pas de doublons. */}
       <section className="poke-card bg-gradient-to-br from-violet-500/30 via-indigo-600/25 to-slate-900/40 p-3">
@@ -699,6 +772,13 @@ export default function FarmPage() {
       )}
 
       <CropsHelpPanel open={cropsHelp} unlockedZones={state.progress.unlockedZones} onClose={() => setCropsHelp(false)} />
+
+      <DailyQuestsPanel
+        open={questsOpen}
+        quests={state.progress.dailyQuests?.quests ?? []}
+        onClaim={(id) => { handleClaimQuest(id); }}
+        onClose={() => setQuestsOpen(false)}
+      />
 
       <RareMaterialPanel open={rareHelp} current={state.progress.rareMaterial} onClose={() => setRareHelp(false)} />
 

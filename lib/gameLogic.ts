@@ -394,7 +394,7 @@ const BOSS_NAMES: Record<number, { name: string; type: CreatureType }> = {
 
 const CROP_CONFIG: Record<
   CropType,
-  { label: string; durationMs: number; food: number; coins: number; rareChance: number; rareDrop: number; seedCost: number; unlockZone: number }
+  { label: string; durationMs: number; food: number; coins: number; rareChance: number; rareDrop: number; seedCost: number; unlockZone: number; xp: number; happiness: number }
 > = {
   fast: {
     label: "Pousse Rapide",
@@ -404,7 +404,9 @@ const CROP_CONFIG: Record<
     rareChance: 0.03,
     rareDrop: 0,
     seedCost: 4,
-    unlockZone: 1
+    unlockZone: 1,
+    xp: 3,
+    happiness: 1
   },
   medium: {
     label: "Buisson a Baies",
@@ -414,7 +416,9 @@ const CROP_CONFIG: Record<
     rareChance: 0.1,
     rareDrop: 1,
     seedCost: 8,
-    unlockZone: 2
+    unlockZone: 2,
+    xp: 7,
+    happiness: 3
   },
   slow: {
     label: "Racine Doree",
@@ -424,7 +428,9 @@ const CROP_CONFIG: Record<
     rareChance: 0.2,
     rareDrop: 2,
     seedCost: 14,
-    unlockZone: 3
+    unlockZone: 3,
+    xp: 14,
+    happiness: 6
   }
 };
 
@@ -1400,7 +1406,7 @@ export const plantCrop = (state: PlayerState, plotId: string, cropType: CropType
 export const harvestCrop = (state: PlayerState, plotId: string, bonusMultiplier = 1) => {
   const plot = state.progress.plots.find((item) => item.id === plotId);
   if (!plot || !plot.cropType || !plot.readyAt || plot.readyAt > getNow()) {
-    return { ok: false as const, nextState: state, gainedFood: 0, gainedCoins: 0, rare: 0 };
+    return { ok: false as const, nextState: state, gainedFood: 0, gainedCoins: 0, rare: 0, gainedXp: 0, gainedHappiness: 0 };
   }
 
   const cfg = CROP_CONFIG[plot.cropType];
@@ -1415,6 +1421,11 @@ export const harvestCrop = (state: PlayerState, plotId: string, bonusMultiplier 
   const rareRoll = Math.random();
   const rare = rareRoll < cfg.rareChance * (bonusMultiplier > 1 ? 1.2 : 1) ? Math.max(1, cfg.rareDrop) : 0;
 
+  // NOUVEAU : la récolte donne aussi XP et bonheur à la créature active
+  // (la production fait progresser le personnage, pas juste le portefeuille)
+  const gainedXp = Math.max(1, Math.round(cfg.xp * amountFactor));
+  const gainedHappiness = cfg.happiness;
+
   let nextState: PlayerState = {
     ...state,
     progress: {
@@ -1426,11 +1437,19 @@ export const harvestCrop = (state: PlayerState, plotId: string, bonusMultiplier 
       plots: state.progress.plots.map((item) =>
         item.id === plotId ? { ...item, cropType: null, plantedAt: null, readyAt: null } : item
       )
-    }
+    },
+    // Bonheur ajouté à la créature active (clamp 100)
+    creatures: state.creatures.map((c) =>
+      c.id === state.progress.currentCreatureId
+        ? { ...c, happiness: Math.min(100, c.happiness + gainedHappiness) }
+        : c
+    )
   };
+  // XP + petit gain joueur (réutilise le pipeline standard qui gère level-ups)
+  nextState = applyXpRewards(nextState, creature.id, gainedXp, Math.max(1, Math.round(gainedXp * 0.4)), 0);
   nextState = progressQuests(nextState, { kind: "harvest" });
 
-  return { ok: true as const, gainedFood, gainedCoins, rare, nextState };
+  return { ok: true as const, gainedFood, gainedCoins, rare, gainedXp, gainedHappiness, nextState };
 };
 
 export const buySeeds = (state: PlayerState, cropType: CropType, amount = 1) => {
