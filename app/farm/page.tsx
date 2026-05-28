@@ -369,28 +369,14 @@ export default function FarmPage() {
         <p className="text-[12px] font-black text-emerald-100">Objectif : {todayGoal}</p>
       </section>
 
-      {/* Carte créature : infos à gauche, sprite à droite */}
+      {/* Carte créature : infos à gauche, sprite à droite. Pas de doublons. */}
       <section className="poke-card bg-gradient-to-br from-violet-500/30 via-indigo-600/25 to-slate-900/40 p-3">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
-          {/* Colonne gauche : nom, barres, stats, statut, évolution */}
+          {/* Colonne GAUCHE : infos compactes (type & forme sont déjà sur le sprite) */}
           <div className="min-w-0 space-y-2">
-            <div>
-              <div className="flex flex-wrap items-center gap-1.5">
-                <TypeBadge type={creature.type} size="xs" />
-                <span className="chip">Lv {creature.level}</span>
-                <span className="chip">Forme {creature.evolution_stage}</span>
-                <span className="chip">× {creature.multiplication_table}</span>
-              </div>
-              <div className="mt-1 flex items-center gap-2">
-                <p className="min-w-0 flex-1 truncate text-lg font-black text-white drop-shadow">{creature.name}</p>
-                <button
-                  onClick={() => setEvoPreviewOpen(true)}
-                  className="shrink-0 rounded-lg border border-violet-300/40 bg-violet-500/25 px-2 py-1 text-[11px] font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/40 active:scale-95"
-                  title="Voir la prochaine évolution"
-                >
-                  ❓ Évolution{evolutionInfo?.ready ? " ✨" : ""}
-                </button>
-              </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="chip">Lv {creature.level}</span>
+              <span className="chip">× {creature.multiplication_table}</span>
             </div>
 
             <div className="space-y-1.5">
@@ -411,18 +397,11 @@ export default function FarmPage() {
               <StatusEffectsBar effects={statusEffects} compact />
             </div>
 
-            <div className="space-y-1.5">
-              {evolutionInfo?.ready && (
-                <button onClick={handleEvolveClick} className="btn-primary w-full text-xs">
-                  ✨ Faire évoluer !
-                </button>
-              )}
-              <p className="text-center text-[11px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
-            </div>
+            <p className="text-center text-[11px] font-black text-white/70">⏱ {formatRemaining(refill)}</p>
           </div>
 
-          {/* Colonne droite : sprite (taille md pour mieux le voir) */}
-          <div className="flex shrink-0 items-start justify-center">
+          {/* Colonne DROITE : sprite + nom + (stage·type) + bouton Évolution dessous */}
+          <div className="flex shrink-0 flex-col items-stretch gap-2">
             <CreatureCard
               creature={creature}
               mood={mood}
@@ -430,6 +409,18 @@ export default function FarmPage() {
               state={state}
               size="md"
             />
+            <button
+              onClick={() => setEvoPreviewOpen(true)}
+              className="w-full rounded-xl border border-violet-300/40 bg-violet-500/25 px-3 py-1.5 text-xs font-black text-violet-100 backdrop-blur-md hover:bg-violet-500/40 active:scale-95"
+              title="Voir la prochaine évolution"
+            >
+              ❓ Évolution{evolutionInfo?.ready ? " ✨" : ""}
+            </button>
+            {evolutionInfo?.ready && (
+              <button onClick={handleEvolveClick} className="btn-primary w-full text-xs">
+                ✨ Faire évoluer !
+              </button>
+            )}
           </div>
         </div>
       </section>
