@@ -1655,9 +1655,9 @@ export const resolveBattleTurn = ({
         actionPowerBase = creature.stats.speed * 1.0;
         break;
       case "spell":
-        // Sort : INT × 2.5 (toujours) + ignore 50% DEF
+        // Sort : INT × 1.95 (= 1.5× plus fort que Frappe qui est ATK × 1.3) + ignore 50% DEF
         // Coût : 2 multiplications (vs 1 pour les autres actions) — justifie la puissance
-        actionPowerBase = creature.stats.intelligence * 2.5;
+        actionPowerBase = creature.stats.intelligence * 1.95;
         ignoreDefenseFactor = 0.5;
         break;
       case "guard":
@@ -1840,16 +1840,18 @@ export const createBossEnemy = (state: PlayerState): Enemy => {
   const zone = state.progress.unlockedZones;
   const meta = BOSS_NAMES[zone] ?? BOSS_NAMES[1];
   const tableFocus = pickTableForZone(state, zone);
-  const difficulty = zone * 3 + Math.floor(state.progress.battlesWon / 4) + 4;
+  // Boss difficulty bumpée : +1 toutes les 3 victoires + bonus de base
+  const difficulty = zone * 3 + Math.floor(state.progress.battlesWon / 3) + 5;
 
   // Le boss prend une species spécifique par zone et toujours stage 3 (forme finale)
   const bossSpecies: Record<number, CreatureSpecies> = { 1: "roche", 2: "givre", 3: "cristal", 4: "braise" };
   const species: CreatureSpecies = bossSpecies[zone] ?? "ombre";
 
-  const maxHp = 140 + difficulty * 25;
-  const attack = 16 + difficulty * 2;
-  const speed = 12 + difficulty * 2;
-  const defense = 14 + difficulty * 2;
+  // Stats boss bumpées (+25-30%) pour rester un cran au-dessus du commun
+  const maxHp = 180 + difficulty * 30;
+  const attack = 21 + difficulty * 2.5;
+  const speed = 15 + difficulty * 2;
+  const defense = 18 + difficulty * 2.2;
 
   return {
     id: `boss-${Date.now()}`,
@@ -1884,38 +1886,40 @@ export const createEnemy = (state: PlayerState): Enemy => {
   const species: CreatureSpecies = pickRandom(speciesPool);
   const type: CreatureType = SPECIES_TYPE[species];
 
-  // Stage selon la zone : surtout stage 1 en zone 1, plus de stage 2/3 dans les zones avancées
+  // Stage selon la zone : stage 2/3 plus fréquents pour pousser la difficulté
   const stageRoll = Math.random();
   const stage: 1 | 2 | 3 = zone === 1
-    ? (stageRoll < 0.85 ? 1 : 2)
+    ? (stageRoll < 0.65 ? 1 : stageRoll < 0.95 ? 2 : 3)
     : zone === 2
-    ? (stageRoll < 0.55 ? 1 : stageRoll < 0.9 ? 2 : 3)
+    ? (stageRoll < 0.35 ? 1 : stageRoll < 0.80 ? 2 : 3)
     : zone === 3
-    ? (stageRoll < 0.3 ? 1 : stageRoll < 0.75 ? 2 : 3)
-    : (stageRoll < 0.2 ? 2 : 3);
+    ? (stageRoll < 0.15 ? 1 : stageRoll < 0.55 ? 2 : 3)
+    : (stageRoll < 0.10 ? 2 : 3);
 
-  // Tempérament aléatoire → fait varier stats
-  const temperament: EnemyTemperament = pickRandom(["balanced", "balanced", "fierce", "swift", "tanky", "tricky"]);
+  // Tempérament aléatoire → fait varier stats. Pondération vers les variantes offensives.
+  const temperament: EnemyTemperament = pickRandom(["balanced", "fierce", "fierce", "swift", "tanky", "tricky"]);
   const tm = TEMPERAMENT_MULS[temperament];
 
   const tableFocus = pickTableForZone(state, zone);
-  const difficulty = zone + Math.floor(state.progress.battlesWon / 4);
+  // Difficulté grimpe 33% plus vite : +1 toutes les 3 victoires (vs 4 avant)
+  const difficulty = zone + Math.floor(state.progress.battlesWon / 3);
   const behavior: EnemyBehavior = zone >= 3 ? (Math.random() < 0.5 ? "aggressive" : "trickster") : "balanced";
 
-  // Élite : 15% de chance + bonus selon zone
-  const isElite = Math.random() < 0.15 + zone * 0.04;
-  const eliteMul = isElite ? 1.3 : 1;
-  // Stage de l'ennemi influence aussi les stats : stage 2 = +25%, stage 3 = +60%
-  const stageMul = stage === 3 ? 1.6 : stage === 2 ? 1.25 : 1;
-  // Petite variance individuelle ±10% pour que 2 ennemis de la même species/stage diffèrent
+  // Élite : ~22% en zone 1 et jusqu'à ~42% en zone 4 (avant : 19%–31%)
+  const isElite = Math.random() < 0.18 + zone * 0.06;
+  const eliteMul = isElite ? 1.35 : 1;
+  // Stage de l'ennemi : stage 2 = +30%, stage 3 = +70% (avant 25%/60%)
+  const stageMul = stage === 3 ? 1.7 : stage === 2 ? 1.3 : 1;
+  // Petite variance individuelle ±10%
   const personalMul = 0.9 + Math.random() * 0.2;
 
   const finalMul = eliteMul * stageMul * personalMul;
 
-  const maxHp = Math.max(15, Math.round((56 + difficulty * 18 + random(0, 10)) * finalMul * tm.hp));
-  const attack = Math.max(5, Math.round((10 + difficulty * 2 + random(0, 3)) * finalMul * tm.atk));
-  const speed = Math.max(5, Math.round((9 + difficulty * 2 + random(0, 4)) * finalMul * tm.spd));
-  const defense = Math.max(3, Math.round((7 + difficulty + random(0, 3)) * finalMul * tm.def));
+  // Stats de base bumpées : HP +28%, ATK +30%, DEF +28% pour rester challenge après évolution joueur
+  const maxHp = Math.max(20, Math.round((72 + difficulty * 22 + random(0, 12)) * finalMul * tm.hp));
+  const attack = Math.max(6, Math.round((13 + difficulty * 2.4 + random(0, 4)) * finalMul * tm.atk));
+  const speed = Math.max(6, Math.round((10 + difficulty * 2.2 + random(0, 4)) * finalMul * tm.spd));
+  const defense = Math.max(4, Math.round((9 + difficulty * 1.3 + random(0, 3)) * finalMul * tm.def));
 
   // Nom : Préfixe + nom de stage de l'espèce + suffixe occasionnel
   const stageName = SPECIES_META[species].stageNames[stage - 1];
